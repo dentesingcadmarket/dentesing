@@ -62,10 +62,26 @@ function addTerminalTyping() {
   const wrap = document.createElement('div');
   wrap.id = id;
   wrap.className = 'terminal-msg ai';
-  wrap.innerHTML = `<div class="terminal-bubble ai"><div class="asistan-typing-dots"><span></span><span></span><span></span></div></div>`;
+  wrap.innerHTML = `<div class="terminal-typing-dots"><span></span><span></span><span></span></div>`;
   chat.appendChild(wrap);
   chat.scrollTop = chat.scrollHeight;
   return id;
+}
+
+function terminalInputChange(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 160) + 'px';
+  const btn = document.getElementById('terminal-send-btn');
+  if (btn) btn.className = 'terminal-send' + (el.value.trim() ? ' active' : '');
+}
+
+function terminalSuggest(text) {
+  const input = document.getElementById('terminal-input');
+  if (input) {
+    input.value = text;
+    terminalInputChange(input);
+    input.focus();
+  }
 }
 
 function formatTerminalText(text) {
@@ -88,11 +104,20 @@ function terminalFileSelected(input) {
   if (!input.files?.[0]) return;
   const file = input.files[0];
   const isStl = file.name.toLowerCase().endsWith('.stl');
-  const badge = document.getElementById('terminal-file-badge');
+
+  function showChip() {
+    const container = document.getElementById('terminal-attachments');
+    if (!container) return;
+    container.innerHTML = '';
+    const chip = document.createElement('div');
+    chip.className = 'terminal-attach-chip';
+    chip.innerHTML = `<span>${isStl ? '🔧' : '🖼️'} ${file.name}</span><button onclick="terminalRemoveFile()" title="Kaldır">×</button>`;
+    container.appendChild(chip);
+  }
 
   if (isStl) {
     terminalFileData = { name: file.name, isStl: true, base64: null, mediaType: null };
-    if (badge) { badge.textContent = `STL: ${file.name}`; badge.style.display = 'inline-block'; }
+    showChip();
     return;
   }
 
@@ -101,9 +126,17 @@ function terminalFileSelected(input) {
     const base64 = e.target.result.split(',')[1];
     const mediaType = file.type || 'image/jpeg';
     terminalFileData = { name: file.name, isStl: false, base64, mediaType };
-    if (badge) { badge.textContent = `IMG: ${file.name}`; badge.style.display = 'inline-block'; }
+    showChip();
   };
   reader.readAsDataURL(file);
+}
+
+function terminalRemoveFile() {
+  terminalFileData = null;
+  const container = document.getElementById('terminal-attachments');
+  if (container) container.innerHTML = '';
+  const input = document.getElementById('terminal-file');
+  if (input) input.value = '';
 }
 
 async function sendTerminalMsg() {
@@ -136,11 +169,7 @@ async function sendTerminalMsg() {
   }
 
   terminalHistory.push({ role: 'user', content: userContent });
-  terminalFileData = null;
-  const badge = document.getElementById('terminal-file-badge');
-  if (badge) badge.style.display = 'none';
-  const fileInput = document.getElementById('terminal-file');
-  if (fileInput) fileInput.value = '';
+  terminalRemoveFile();
 
   terminalLoading = true;
   const typingId = addTerminalTyping();

@@ -77,78 +77,82 @@
 
   <!-- MODULES -->
   <section class="f-modules-section" id="modules-section">
-    <div class="f-section-label">Ne Sunuyoruz?</div>
+    <div class="aurora-bg-section">
+      <div class="aurora-shape aurora-shape-1"></div>
+      <div class="aurora-shape aurora-shape-2"></div>
+      <div class="aurora-shape aurora-shape-3"></div>
+    </div>
+    <div class="f-section-label">Lisans Planları</div>
     <h2 class="f-section-title">3 Modül · Tek Platform</h2>
     <p class="f-section-sub">Modüller birbirinin üzerine inşa edilir — ilerledikçe sistem güçlenir.</p>
 
-    <div class="f-modules-grid">
+    <div class="f-modules-grid aurora-cards-grid">
 
       <!-- MODÜL 1 -->
-      <div class="f-mod f-mod-1" onclick="showModDetail(1)">
-        <div class="f-mod-header">
-          <div class="f-mod-glow"></div>
-          <div class="f-mod-num">Modül 01 — Temel</div>
-          <div class="f-mod-title">Kariyer ve Yükseliş</div>
-          <div class="f-mod-tagline">Sahaya ilk adım atan teknisyen için temel sistemi kur</div>
-        </div>
-        <div class="f-mod-body">
-          <ul class="f-mod-list">
-            <li>🤖 AI destekli kişisel yol haritası</li>
-            <li>📅 Günlük iş ve vaka takibi</li>
-            <li>⚠️ Hata günlüğü ve tekrar radarı</li>
-            <li>🧠 Vaka karar motoru</li>
-            <li>🧬 Skor ve seviye sistemi</li>
+      <div class="aurora-card aurora-card-1" onclick="showModDetail(1)">
+        <div class="aurora-card-glow aurora-glow-1"></div>
+        <div class="aurora-card-inner">
+          <div class="aurora-plan-label">Modül 01 — Temel</div>
+          <div class="aurora-plan-name" style="color:var(--m1b)">Kariyer ve Yükseliş</div>
+          <div class="aurora-plan-desc">Sahaya ilk adım atan teknisyen için temel sistemi kur.</div>
+          <div class="aurora-plan-price">
+            <span class="aurora-price-tag">Tek seferlik</span>
+            <span class="aurora-price-sub">ömür boyu erişim</span>
+          </div>
+          <ul class="aurora-feature-list">
+            <li><span class="aurora-check" style="color:var(--m1b)">✓</span> AI destekli kişisel yol haritası</li>
+            <li><span class="aurora-check" style="color:var(--m1b)">✓</span> Günlük iş ve vaka takibi</li>
+            <li><span class="aurora-check" style="color:var(--m1b)">✓</span> Hata günlüğü ve tekrar radarı</li>
+            <li><span class="aurora-check" style="color:var(--m1b)">✓</span> KPI ve hız analizi</li>
+            <li><span class="aurora-check" style="color:var(--m1b)">✓</span> Skor ve seviye sistemi</li>
           </ul>
-        </div>
-        <div class="f-mod-footer">
-          <span class="f-mod-price" style="color:var(--m1b)">Tek seferlik lisans</span>
-          <button class="f-mod-btn">İncele →</button>
+          <button class="aurora-cta-btn aurora-cta-1">İncele →</button>
         </div>
       </div>
 
-      <!-- MODÜL 2 -->
-      <div class="f-mod f-mod-2" onclick="showModDetail(2)">
-        <div class="f-mod-header">
-          <div class="f-mod-glow"></div>
-          <div class="f-mod-num">Modül 02 — Asıl Güç</div>
-          <div class="f-mod-title">Dijital Tasarım Sistemi</div>
-          <div class="f-mod-tagline">CAD yazılımında hızlan, protokol kur, rakipten ayrış</div>
-        </div>
-        <div class="f-mod-body">
-          <ul class="f-mod-list">
-            <li>🖥️ Exocad & 3Shape protokolleri</li>
-            <li>⚡ Zamanlı hız egzersizleri</li>
-            <li>📐 Vaka bazlı tasarım şablonları</li>
-            <li>📊 Haftalık ilerleme analizi</li>
-            <li>🏆 Yetkinlik seviye sistemi</li>
+      <!-- MODÜL 2 — FEATURED -->
+      <div class="aurora-card aurora-card-2 aurora-featured" onclick="showModDetail(2)">
+        <div class="aurora-card-glow aurora-glow-2"></div>
+        <div class="aurora-featured-badge">En Popüler</div>
+        <div class="aurora-card-inner">
+          <div class="aurora-plan-label">Modül 02 — Asıl Güç</div>
+          <div class="aurora-plan-name" style="color:var(--m2b)">Dijital Tasarım Sistemi</div>
+          <div class="aurora-plan-desc">CAD yazılımında hızlan, protokol kur, rakipten ayrış.</div>
+          <div class="aurora-plan-price">
+            <span class="aurora-price-tag">Aylık</span>
+            <span class="aurora-price-sub">iptal edilebilir</span>
+          </div>
+          <ul class="aurora-feature-list">
+            <li><span class="aurora-check" style="color:var(--m2b)">✓</span> Modül 1'deki her şey</li>
+            <li><span class="aurora-check" style="color:var(--m2b)">✓</span> Exocad & 3Shape protokolleri</li>
+            <li><span class="aurora-check" style="color:var(--m2b)">✓</span> AI CAD Analiz Motoru</li>
+            <li><span class="aurora-check" style="color:var(--m2b)">✓</span> Vaka pratikleri kütüphanesi</li>
+            <li><span class="aurora-check" style="color:var(--m2b)">✓</span> Zamanlı hız egzersizleri</li>
+            <li><span class="aurora-check" style="color:var(--m2b)">✓</span> Haftalık ilerleme analizi</li>
           </ul>
-        </div>
-        <div class="f-mod-footer">
-          <span class="f-mod-price" style="color:var(--m2b)">Aylık abonelik</span>
-          <button class="f-mod-btn">İncele →</button>
+          <button class="aurora-cta-btn aurora-cta-2">İncele →</button>
         </div>
       </div>
 
       <!-- MODÜL 3 -->
-      <div class="f-mod f-mod-3" onclick="showModDetail(3)">
-        <div class="f-mod-header">
-          <div class="f-mod-glow"></div>
-          <div class="f-mod-num">Modül 03 — Zirve</div>
-          <div class="f-mod-title">Freelance veya İşletme</div>
-          <div class="f-mod-tagline">Kendi işini kur, müşterini yönet, işletmeni büyüt</div>
-        </div>
-        <div class="f-mod-body">
-          <ul class="f-mod-list">
-            <li>💰 Akıllı fiyatlandırma motoru</li>
-            <li>🤝 Müşteri CRM sistemi</li>
-            <li>📦 Stüdyo kurulum yol haritası</li>
-            <li>📊 Gelir ve gider analizi</li>
-            <li>🚀 İşletme büyüme stratejisi</li>
+      <div class="aurora-card aurora-card-3" onclick="showModDetail(3)">
+        <div class="aurora-card-glow aurora-glow-3"></div>
+        <div class="aurora-card-inner">
+          <div class="aurora-plan-label">Modül 03 — Zirve</div>
+          <div class="aurora-plan-name" style="color:var(--m3b)">Freelance veya İşletme</div>
+          <div class="aurora-plan-desc">Kendi işini kur, müşterini yönet, işletmeni büyüt.</div>
+          <div class="aurora-plan-price">
+            <span class="aurora-price-tag">Tek seferlik</span>
+            <span class="aurora-price-sub">ömür boyu erişim</span>
+          </div>
+          <ul class="aurora-feature-list">
+            <li><span class="aurora-check" style="color:var(--m3b)">✓</span> Modül 1 & 2'deki her şey</li>
+            <li><span class="aurora-check" style="color:var(--m3b)">✓</span> Akıllı fiyatlandırma motoru</li>
+            <li><span class="aurora-check" style="color:var(--m3b)">✓</span> Müşteri CRM sistemi</li>
+            <li><span class="aurora-check" style="color:var(--m3b)">✓</span> Stüdyo kurulum yol haritası</li>
+            <li><span class="aurora-check" style="color:var(--m3b)">✓</span> İşletme büyüme stratejisi</li>
           </ul>
-        </div>
-        <div class="f-mod-footer">
-          <span class="f-mod-price" style="color:var(--m3b)">Tek seferlik lisans</span>
-          <button class="f-mod-btn">İncele →</button>
+          <button class="aurora-cta-btn aurora-cta-3">İncele →</button>
         </div>
       </div>
 
@@ -484,39 +488,51 @@
     <div class="page" id="page-terminal">
       <div class="terminal-wrap">
         <div id="terminal-wave"></div>
+        <div class="terminal-blob terminal-blob-1"></div>
+        <div class="terminal-blob terminal-blob-2"></div>
+        <div class="terminal-blob terminal-blob-3"></div>
         <div class="terminal-chat-wrap">
           <div class="terminal-header">
-            <div class="terminal-title">D·CONSOLE / TERMINAL</div>
-            <div class="terminal-sub">CAD Analiz Motoru · Exocad · 3Shape · Zirkonyum · İmplant</div>
-          </div>
-          <div class="terminal-file-row">
-            <label class="terminal-file-btn">
-              DOSYA <input type="file" id="terminal-file" accept=".png,.jpg,.jpeg,.stl" style="display:none" onchange="terminalFileSelected(this)">
-            </label>
-            <span class="terminal-file-badge" id="terminal-file-badge"></span>
-            <button class="terminal-clear" onclick="clearTerminalHistory()">SIFIRLA</button>
+            <div class="terminal-title">CAD Analiz Motoru</div>
+            <div class="terminal-sub">Exocad · 3Shape · Zirkonyum · PFM · İmplant üst yapıları</div>
           </div>
           <div class="terminal-chat" id="terminal-chat">
             <div class="terminal-welcome" id="terminal-welcome">
-              <div class="terminal-welcome-prompt">&gt; _</div>
-              <div class="terminal-welcome-sub">
-                D·CONSOLE Terminal aktif.<br>
-                Exocad · 3Shape · Zirkonyum · PFM · İmplant üst yapı<br>
-                konularında teknik sorularını yaz.
+              <div class="terminal-welcome-icon">🦷</div>
+              <div class="terminal-welcome-title">Bugün nasıl yardımcı olabilirim?</div>
+              <div class="terminal-welcome-sub">CAD tasarım sorularını sor, görsel veya STL yükle, teknik analiz al.</div>
+              <div class="terminal-suggestions">
+                <button class="terminal-sug-btn" onclick="terminalSuggest('Zirkonyum kron için Exocad sementasyon boşluğu kaç olmalı?')">⚡ Exocad parametreler</button>
+                <button class="terminal-sug-btn" onclick="terminalSuggest('3Shape ile PFM tasarımında metal çerçeve kalınlığı kaç mm olmalı?')">📐 PFM protokolü</button>
+                <button class="terminal-sug-btn" onclick="terminalSuggest('İmplant üst yapı tasarımında emergence profile nasıl olmalı?')">🦷 İmplant üst yapı</button>
+                <button class="terminal-sug-btn" onclick="terminalSuggest('Zirkonyum frezeleme parametreleri ve sintering süresi nedir?')">⚙️ Frezeleme</button>
               </div>
             </div>
           </div>
-          <div class="terminal-input-row">
-            <span class="terminal-input-prefix">&gt;</span>
-            <textarea
-              id="terminal-input"
-              class="terminal-input"
-              placeholder="komut gir..."
-              rows="1"
-              onkeydown="terminalKeydown(event)"
-              oninput="autoResizeTA(this)"
-            ></textarea>
-            <button class="terminal-send" onclick="sendTerminalMsg()">RUN</button>
+          <div class="terminal-input-area">
+            <div class="terminal-attachments" id="terminal-attachments"></div>
+            <div class="terminal-input-box">
+              <textarea
+                id="terminal-input"
+                class="terminal-input"
+                placeholder="Teknik soru sor veya dosya yükle..."
+                rows="1"
+                onkeydown="terminalKeydown(event)"
+                oninput="terminalInputChange(this)"
+              ></textarea>
+              <div class="terminal-input-toolbar">
+                <div class="terminal-toolbar-left">
+                  <label class="terminal-tool-btn" title="Görsel veya STL yükle" style="cursor:pointer">
+                    📎
+                    <input type="file" id="terminal-file" accept=".png,.jpg,.jpeg,.stl" style="display:none" onchange="terminalFileSelected(this)">
+                  </label>
+                  <button class="terminal-clear-btn" onclick="clearTerminalHistory()">Temizle</button>
+                </div>
+                <button id="terminal-send-btn" class="terminal-send" onclick="sendTerminalMsg()">
+                  Gönder →
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
