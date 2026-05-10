@@ -1,7 +1,7 @@
 // ── SAYFA MODÜLLERİ ──
 const PAGE_MODULES = {
-  terminal: 2, vakalar: 2,
-  tasarim: 2, egzersiz: 2, fiyat: 2, musteri: 2
+  search: 2, vakalar: 2,
+  plan: 1, magaza: 1, magazin: 1, topluluk: 1
 };
 
 // ── EKRAN YÖNETİMİ ──
@@ -40,11 +40,6 @@ function showApp(modNo) {
       if (lockIcon) lockIcon.remove();
     }
   });
-  // Eski gizleme kaldırıldı - nav-mod2 ve nav-mod3 her zaman göster
-  const mod2nav = document.getElementById('nav-mod2');
-  const mod3nav = document.getElementById('nav-mod3');
-  if (mod2nav) mod2nav.style.display = 'block';
-  if (mod3nav) mod3nav.style.display = 'block';
   loadDashboard();
 }
 function showModDetail(num) {
@@ -154,13 +149,60 @@ function closeLockOverlay() {
   if (overlay) overlay.classList.remove('open');
 }
 
+// ── NAV GRUP TOGGLE ──
+function toggleNavGroup(id) {
+  const body = document.getElementById('nav-group-' + id);
+  if (!body) return;
+  const header = body.previousElementSibling;
+  body.classList.toggle('collapsed');
+  if (header) header.classList.toggle('collapsed');
+}
+
+// ── SUPPORT ──
+function openSupport() {
+  window.location.href = 'mailto:dentesingcadmarket@gmail.com?subject=Destek%20Talebi&body=Merhaba%2C';
+}
+
+// ── PLAN TABS ──
+function switchPlanTab(tab, el) {
+  document.querySelectorAll('.plan-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.plan-tab-panel').forEach(p => p.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const panel = document.getElementById('plan-tab-' + tab);
+  if (panel) panel.classList.add('active');
+  if (tab === 'kayitlar') loadGunluk();
+  if (tab === 'hata') loadHata();
+  if (tab === 'gelisim') loadGelisim();
+}
+
+function loadPlan() {
+  // Default: show first tab
+  const firstTab = document.querySelector('.plan-tab');
+  const firstPanel = document.getElementById('plan-tab-kayitlar');
+  if (firstTab && firstPanel) {
+    document.querySelectorAll('.plan-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.plan-tab-panel').forEach(p => p.classList.remove('active'));
+    firstTab.classList.add('active');
+    firstPanel.classList.add('active');
+    loadGunluk();
+  }
+}
+
+function initSearch() {
+  if (typeof initTerminal === 'function') initTerminal();
+}
+
 // ── APP NAVİGASYON ──
 const breadcrumbs = {
-  dashboard:'Dashboard', gunluk:'Günlük Takip', hata:'Hata Günlüğü',
-  tasarim:'Tasarım Takibi', egzersiz:'Hız Egzersizleri',
-  fiyat:'Fiyatlandırma', musteri:'Müşteri Takip', rehber:'Nasıl Kullanılır?',
-  gelisim:'Gelişim Takibi', yolharita:'Yol Haritam',
-  terminal:'Terminal', vakalar:'Vaka Pratikleri'
+  dashboard: 'Dashboard',
+  search: 'Search',
+  plan: 'Planım',
+  magaza: 'Mağaza',
+  magazin: 'Magazin',
+  topluluk: 'Topluluk',
+  rehber: 'Nasıl Kullanılır?',
+  vakalar: 'Vaka Pratikleri',
+  yolharita: 'Yol Haritam'
 };
 
 function navigate(page, el) {
@@ -178,9 +220,7 @@ function navigate(page, el) {
   if (el) el.classList.add('active');
   document.getElementById('breadcrumb').innerHTML = `D·CONSOLE › <span>${breadcrumbs[page] || page}</span>`;
   if (page === 'dashboard') loadDashboard();
-  if (page === 'gunluk') loadGunluk();
-  if (page === 'hata') loadHata();
-  if (page === 'gelisim') loadGelisim();
-  if (page === 'terminal') initTerminal();
+  if (page === 'plan') loadPlan();
+  if (page === 'search') initSearch();
   if (page === 'vakalar') loadVakalar();
 }
