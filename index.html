@@ -7,7 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=6">
 </head>
 <body>
 
@@ -331,12 +331,7 @@
           <div class="section-title">📅 Son Günler</div>
           <div class="section-link" onclick="navigate('plan',null)">Tümünü gör →</div>
         </div>
-        <div class="db-wrap">
-          <table class="db-table">
-            <thead><tr><th>Tarih</th><th>İş Türü</th><th>Süre</th><th>Hata</th><th>Durum</th></tr></thead>
-            <tbody id="dash-gunluk"></tbody>
-          </table>
-        </div>
+        <div class="items-list" id="dash-gunluk"></div>
         <div class="add-row" onclick="openModal('gun')">+ Yeni gün ekle</div>
 
         <div class="pdivider"></div>
@@ -345,12 +340,7 @@
           <div class="section-title">⚠️ Son Hatalar</div>
           <div class="section-link" onclick="navigate('plan',null)">Tümünü gör →</div>
         </div>
-        <div class="db-wrap">
-          <table class="db-table">
-            <thead><tr><th>Tarih</th><th>Hata</th><th>Tekrarlandı mı</th><th>Kritik</th></tr></thead>
-            <tbody id="dash-hata"></tbody>
-          </table>
-        </div>
+        <div class="items-list" id="dash-hata"></div>
         <div class="add-row" onclick="openModal('hata')">+ Yeni hata ekle</div>
       </div>
     </div>
@@ -645,12 +635,12 @@
             <div class="view-tab" onclick="setGunlukFilter('hafta',this)">📊 Bu Hafta</div>
             <div class="view-tab" onclick="setGunlukFilter('tumu',this)">📋 Tümü</div>
           </div>
-          <div class="db-wrap">
-            <table class="db-table">
-              <thead><tr><th>Tarih</th><th>İş Türü</th><th>Süre (dk)</th><th>Hata Sayısı</th><th>Zorluk</th><th>Durum</th><th>Not</th><th></th></tr></thead>
-              <tbody id="gunluk-tbody"></tbody>
-            </table>
-          </div>
+          <div class="items-list" id="gunluk-tbody"></div>
+
+
+
+
+
           <div class="add-row" onclick="openModal('gun')">+ Yeni gün ekle</div>
         </div>
         <!-- Tab 2: Hata Günlüğü -->
@@ -660,23 +650,23 @@
             <button id="hata-analiz-btn" class="qa-btn blue" onclick="loadHataAnaliz()">🤖 AI Analiz</button>
           </div>
           <div id="hata-analiz-result" style="display:none;background:rgba(74,144,217,0.08);border:1px solid rgba(74,144,217,0.25);border-radius:8px;padding:14px 18px;font-size:13px;line-height:1.7;margin-bottom:16px;color:var(--text)"></div>
-          <div class="db-wrap">
-            <table class="db-table">
-              <thead><tr><th>Tarih</th><th>Hata</th><th>Sebep</th><th>Çözüm</th><th>Tekrarlandı mı</th><th>Kritik</th><th></th></tr></thead>
-              <tbody id="hata-tbody"></tbody>
-            </table>
-          </div>
+          <div class="items-list" id="hata-tbody"></div>
+
+
+
+
+
           <div class="add-row" onclick="openModal('hata')">+ Yeni hata ekle</div>
         </div>
         <!-- Tab 3: Analizler (Karar Sistemi) -->
         <div class="plan-tab-panel" id="plan-tab-karar">
           <div class="quick-actions" style="margin-top:14px"><button class="qa-btn blue" onclick="openModal('karar')">🧠 Yeni Karar Ekle</button></div>
-          <div class="db-wrap" style="margin-top:14px">
-            <table class="db-table">
-              <thead><tr><th>Tarih</th><th>Vaka Türü</th><th>CAD Ayarı</th><th></th></tr></thead>
-              <tbody id="karar-tbody"></tbody>
-            </table>
-          </div>
+          <div class="items-list" id="karar-tbody" style="margin-top:14px"></div>
+
+
+
+
+
           <div class="add-row" onclick="openModal('karar')">+ Yeni karar ekle</div>
         </div>
         <!-- Tab 4: Gelişim -->

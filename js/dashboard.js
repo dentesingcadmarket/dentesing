@@ -21,18 +21,21 @@
   document.getElementById('kpi-sure').innerHTML=avg?`${avg}<span style="font-size:16px;color:var(--text2)">dk</span>`:'—';
   document.getElementById('kpi-hata').textContent=(hAll.data||[]).length||0;
 
+  const AVATAR_COLORS=['linear-gradient(135deg,#4a90d9,#1e293b)','linear-gradient(135deg,#e8b840,#1e293b)','linear-gradient(135deg,#9b6dd0,#1e293b)','linear-gradient(135deg,#e05050,#1e293b)','linear-gradient(135deg,#50a060,#1e293b)'];
   const gt=document.getElementById('dash-gunluk'); gt.innerHTML='';
-  if (!g.data?.length) { gt.innerHTML='<tr class="empty-row"><td colspan="5">Henüz kayıt yok 👆</td></tr>'; }
-  else g.data.forEach(r=>{
+  if (!g.data?.length) { gt.innerHTML='<div class="item-empty">Henüz kayıt yok 👆</div>'; }
+  else g.data.forEach((r,i)=>{
     const durum=(r.hata_sayisi||0)===0?'<span class="badge green">✅ Temiz</span>':'<span class="badge orange">⚠️ Geliştirilmeli</span>';
-    gt.innerHTML+=`<tr><td>${fmtDate(r.tarih)}</td><td><span class="badge blue">${r.is_turu||'—'}</span></td><td>${r.sure||0}dk</td><td>${r.hata_sayisi||0}</td><td>${durum}</td></tr>`;
+    const featured=i===0?' item-featured':'';
+    gt.innerHTML+=`<div class="item-card${featured}"><div class="item-avatar" style="background:${AVATAR_COLORS[i%AVATAR_COLORS.length]}">${(r.is_turu||'?').charAt(0)}</div><div class="item-body"><div class="item-top"><span class="item-name">${r.is_turu||'—'}</span><span class="item-time">${fmtDate(r.tarih)}</span></div><div class="item-preview">${r.sure||0}dk · ${r.hata_sayisi||0} hata · ${r.zorluk||'—'}</div><div class="item-meta">${durum}</div></div></div>`;
   });
   const ht=document.getElementById('dash-hata'); ht.innerHTML='';
-  if (!h.data?.length) { ht.innerHTML='<tr class="empty-row"><td colspan="4">Henüz hata kaydı yok 🎉</td></tr>'; }
-  else h.data.forEach(r=>{
-    const tekrar=r.tekrarlandi?'<span class="badge red">Evet</span>':'<span class="badge green">Hayır</span>';
-    const kritik=r.tekrarlandi?'<span style="color:var(--orange)">⚠️ Kritik</span>':'';
-    ht.innerHTML+=`<tr><td>${fmtDate(r.tarih)}</td><td>${r.hata||'—'}</td><td>${tekrar}</td><td>${kritik}</td></tr>`;
+  if (!h.data?.length) { ht.innerHTML='<div class="item-empty">Henüz hata kaydı yok 🎉</div>'; }
+  else h.data.forEach((r,i)=>{
+    const tekrar=r.tekrarlandi?'<span class="badge red">Tekrar</span>':'<span class="badge green">İlk</span>';
+    const featured=i===0?' item-featured':'';
+    const avatarBg=r.tekrarlandi?'linear-gradient(135deg,#e05050,#1e293b)':'linear-gradient(135deg,#50a060,#1e293b)';
+    ht.innerHTML+=`<div class="item-card${featured}"><div class="item-avatar" style="background:${avatarBg}">${(r.hata||'H').charAt(0).toUpperCase()}</div><div class="item-body"><div class="item-top"><span class="item-name">${r.hata||'—'}</span><span class="item-time">${fmtDate(r.tarih)}</span></div><div class="item-preview">${r.sebep||'Sebep belirtilmedi'}</div><div class="item-meta">${tekrar}${r.tekrarlandi?'<span class="item-critical">⚠️ Kritik</span>':''}</div></div></div>`;
   });
 }
 
@@ -44,16 +47,14 @@ async function loadGunluk() {
   if (gunlukFilter==='bugun') q=q.eq('tarih',today);
   else if (gunlukFilter==='hafta') { const w=new Date(); w.setDate(w.getDate()-7); q=q.gte('tarih',w.toISOString().split('T')[0]); }
   const {data}=await q; const tbody=document.getElementById('gunluk-tbody'); tbody.innerHTML='';
-  if (!data?.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="8">Bu filtre için kayıt yok.</td></tr>'; return; }
-  data.forEach(r=>{
+  if (!data?.length) { tbody.innerHTML='<div class="item-empty">Bu filtre için kayıt yok.</div>'; return; }
+  const AC=['linear-gradient(135deg,#4a90d9,#1e293b)','linear-gradient(135deg,#e8b840,#1e293b)','linear-gradient(135deg,#9b6dd0,#1e293b)','linear-gradient(135deg,#e05050,#1e293b)','linear-gradient(135deg,#50a060,#1e293b)'];
+  data.forEach((r,i)=>{
     const durum=(r.hata_sayisi||0)===0?'<span class="badge green">✅ Temiz</span>':'<span class="badge orange">⚠️ Geliştirilmeli</span>';
-    const zb=r.zorluk==='Kolay'?'green':r.zorluk==='Zor'?'red':'orange';
-    const dosyaCell = r.dosya_url
-      ? (r.dosya_url.toLowerCase().endsWith('.stl')
-          ? `<span title="${r.dosya_url}" style="cursor:pointer">📦</span>`
-          : `<img src="${r.dosya_url}" style="width:32px;height:32px;object-fit:cover;border-radius:4px;cursor:pointer" onclick="window.open('${r.dosya_url}','_blank')" title="Görseli aç">`)
-      : '—';
-    tbody.innerHTML+=`<tr><td>${fmtDate(r.tarih)}</td><td><span class="badge blue">${r.is_turu||'—'}</span></td><td>${r.sure||0}</td><td>${r.hata_sayisi||0}</td><td><span class="badge ${zb}">${r.zorluk||'—'}</span></td><td>${durum}</td><td style="color:var(--text3);font-size:12px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.not_||''}</td><td>${dosyaCell}</td><td><button class="delete-btn" onclick="deleteRecord('gunluk_takip','${r.id}','gunluk')">✕</button></td></tr>`;
+    const zb=r.zorluk==='Kolay'?'tag-m1':r.zorluk==='Zor'?'tag-m3':'tag-m2';
+    const featured=i===0?' item-featured':'';
+    const dosyaBtn=r.dosya_url?(r.dosya_url.toLowerCase().endsWith('.stl')?`<span class="item-file" title="STL">📦</span>`:`<img src="${r.dosya_url}" class="item-thumb" onclick="window.open('${r.dosya_url}','_blank')" title="Görseli aç">`):'';
+    tbody.innerHTML+=`<div class="item-card${featured}"><div class="item-avatar" style="background:${AC[i%AC.length]}">${(r.is_turu||'?').charAt(0)}</div><div class="item-body"><div class="item-top"><span class="item-name">${r.is_turu||'—'}</span><span class="item-time">${fmtDate(r.tarih)}</span></div><div class="item-preview">${r.sure||0}dk · ${r.hata_sayisi||0} hata${r.not_?' · '+r.not_:''}</div><div class="item-meta"><span class="tag-badge ${zb}">${r.zorluk||'—'}</span>${durum}${dosyaBtn}</div></div><button class="delete-btn" onclick="deleteRecord('gunluk_takip','${r.id}','gunluk')">✕</button></div>`;
   });
 }
 function setGunlukFilter(f,el) { gunlukFilter=f; document.querySelectorAll('#gunluk-tabs .view-tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); loadGunluk(); }
@@ -63,11 +64,12 @@ async function loadHata() {
   if (!currentUser) return;
   const {data}=await sb.from('hata_gunlugu').select('*').eq('user_id',currentUser.id).order('tarih',{ascending:false});
   const tbody=document.getElementById('hata-tbody'); tbody.innerHTML='';
-  if (!data?.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="7">Henüz hata kaydı yok 🎉</td></tr>'; return; }
-  data.forEach(r=>{
-    const tekrar=r.tekrarlandi?'<span class="badge red">Evet</span>':'<span class="badge green">Hayır</span>';
-    const kritik=r.tekrarlandi?'<span style="color:var(--orange)">⚠️ Kritik</span>':'';
-    tbody.innerHTML+=`<tr><td>${fmtDate(r.tarih)}</td><td>${r.hata||'—'}</td><td style="color:var(--text3);font-size:12px">${r.sebep||'—'}</td><td style="color:var(--text3);font-size:12px">${r.cozum||'—'}</td><td>${tekrar}</td><td>${kritik}</td><td><button class="delete-btn" onclick="deleteRecord('hata_gunlugu','${r.id}','hata')">✕</button></td></tr>`;
+  if (!data?.length) { tbody.innerHTML='<div class="item-empty">Henüz hata kaydı yok 🎉</div>'; return; }
+  data.forEach((r,i)=>{
+    const tekrar=r.tekrarlandi?'<span class="badge red">Tekrar</span>':'<span class="badge green">İlk</span>';
+    const featured=i===0?' item-featured':'';
+    const avatarBg=r.tekrarlandi?'linear-gradient(135deg,#e05050,#1e293b)':'linear-gradient(135deg,#50a060,#1e293b)';
+    tbody.innerHTML+=`<div class="item-card${featured}"><div class="item-avatar" style="background:${avatarBg}">${(r.hata||'H').charAt(0).toUpperCase()}</div><div class="item-body"><div class="item-top"><span class="item-name">${r.hata||'—'}</span><span class="item-time">${fmtDate(r.tarih)}</span></div><div class="item-preview">${r.sebep||'Sebep belirtilmedi'}</div><div class="item-meta">${tekrar}${r.tekrarlandi?'<span class="item-critical">⚠️ Kritik</span>':''}${r.cozum?'<span class="item-cozum">💡 '+r.cozum+'</span>':''}</div></div><button class="delete-btn" onclick="deleteRecord('hata_gunlugu','${r.id}','hata')">✕</button></div>`;
   });
 }
 
