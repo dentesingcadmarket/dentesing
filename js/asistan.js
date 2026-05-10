@@ -1,11 +1,11 @@
-ï»¿// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// TEKNÄ°K ASÄ°STAN
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ==========================================
+// TEKNİK ASİSTAN
+// ==========================================
 let asistanHistory = [];
 let asistanLoading = false;
 
 function initAsistan() {
-  // Sayfaya her gelindiÄŸinde welcome'Ä± gÃ¶ster (sohbet geÃ§miÅŸi varsa gizle)
+  // Sayfaya her gelindiğinde welcome'ı göster (sohbet geçmişi varsa gizle)
   const welcome = document.getElementById('asistan-welcome');
   if (welcome) welcome.style.display = asistanHistory.length ? 'none' : 'flex';
 }
@@ -106,7 +106,7 @@ async function sendAsistanMsg() {
   const typingId = addTypingBubble();
 
   try {
-    // KullanÄ±cÄ± verilerini Ã§ek
+    // Kullanıcı verilerini çek
     let contextBlock = '';
     if (currentUser) {
       const [hataRes, gunlukRes] = await Promise.all([
@@ -117,38 +117,38 @@ async function sendAsistanMsg() {
       if (hataRes.data?.length) {
         contextBlock += '\n\nKULLANICININ SON HATA KAYITLARI:\n';
         hataRes.data.forEach(h => {
-          contextBlock += `- Hata: ${h.hata} | Sebep: ${h.sebep||'â€”'} | Ã‡Ã¶zÃ¼m: ${h.cozum||'â€”'} | Tekrar etti mi: ${h.tekrarlandi ? 'EVET (KRÄ°TÄ°K)' : 'HayÄ±r'}\n`;
+          contextBlock += `- Hata: ${h.hata} | Sebep: ${h.sebep||'—'} | Çözüm: ${h.cozum||'—'} | Tekrar etti mi: ${h.tekrarlandi ? 'EVET (KRİTİK)' : 'Hayır'}\n`;
         });
       }
       if (gunlukRes.data?.length) {
-        contextBlock += '\nKULLANICININ SON GÃœNLÃœK Ä°Å KAYITLARI:\n';
+        contextBlock += '\nKULLANICININ SON GÜNLÜK İŞ KAYITLARI:\n';
         gunlukRes.data.forEach(g => {
-          contextBlock += `- Ä°ÅŸ tÃ¼rÃ¼: ${g.is_turu} | SÃ¼re: ${g.sure}dk | Hata sayÄ±sÄ±: ${g.hata_sayisi} | Zorluk: ${g.zorluk}\n`;
+          contextBlock += `- İş türü: ${g.is_turu} | Süre: ${g.sure}dk | Hata sayısı: ${g.hata_sayisi} | Zorluk: ${g.zorluk}\n`;
         });
       }
     }
 
-    const systemPrompt = `Sen Dentesing CAD Market platformunun teknik asistanÄ±sÄ±n. DiÅŸ teknisyenliÄŸi alanÄ±nda Ã¼st dÃ¼zey uzman ve deneyimli bir mentorsun.
+    const systemPrompt = `Sen Dentesing CAD Market platformunun teknik asistanısın. Diş teknisyenliği alanında üst düzey uzman ve deneyimli bir mentorsun.
 
 UZMANLIK ALANLARIN:
-â€¢ Sabit protez: Tam zirkonyum, PFM, E-max, hibrit restorasyonlar
-â€¢ Hareketli protez: Kennedy sÄ±nÄ±flandÄ±rmasÄ± (4 sÄ±nÄ±f + Applegate modifikasyonlarÄ±), tam protez, bÃ¶lÃ¼mlÃ¼ protez, kroÅŸe ve tutturucu tasarÄ±mÄ±, RPI sistemi, hassas tutturucular
-â€¢ Ä°mplant Ã¼st yapÄ±larÄ±: Screw-retained vs cement-retained karar kriterleri, aÃ§Ä±lÄ± abutmentlar, all-on-4/6
-â€¢ CAD/CAM: Exocad (DentalCAD), 3Shape, Cerec â€” ileri seviye parametreler, freze stratejileri, baÄŸlantÄ± noktasÄ± optimizasyonu, okluzyum tasarÄ±mÄ±
-â€¢ Materyal bilimi: Zirkonyum (monolitik, katmanlÄ±), PMMA, E-max, hibrit seramik, titanyum â€” her birinin endikasyon/kontraendikasyon ve teknik parametreleri
-â€¢ OklÃ¼zyon: artikÃ¼latÃ¶r kullanÄ±mÄ±, maksimum interkuspidasyonu, sentrik iliÅŸki, anterior rehberlik
-â€¢ Frezleme parametreleri: Wet/dry milling, bur aÅŸÄ±nmasÄ±, toleranslar, yÃ¼zey kalitesi
+• Sabit protez: Tam zirkonyum, PFM, E-max, hibrit restorasyonlar
+• Hareketli protez: Kennedy sınıflandırması (4 sınıf + Applegate modifikasyonları), tam protez, bölümlü protez, kroşe ve tutturucu tasarımı, RPI sistemi, hassas tutturucular
+• İmplant üst yapıları: Screw-retained vs cement-retained karar kriterleri, açılı abutmentlar, all-on-4/6
+• CAD/CAM: Exocad (DentalCAD), 3Shape, Cerec — ileri seviye parametreler, freze stratejileri, bağlantı noktası optimizasyonu, okluzyum tasarımı
+• Materyal bilimi: Zirkonyum (monolitik, katmanlı), PMMA, E-max, hibrit seramik, titanyum — her birinin endikasyon/kontraendikasyon ve teknik parametreleri
+• Oklüzyon: artikülatör kullanımı, maksimum interkuspidasyonu, sentrik ilişki, anterior rehberlik
+• Frezleme parametreleri: Wet/dry milling, bur aşınması, toleranslar, yüzey kalitesi
 
-DAVRANIÅ KURALLARI:
-â€¢ TÃ¼rkÃ§e yanÄ±t ver
-â€¢ DoÄŸrudan, teknik ve pratik ol â€” gereksiz giriÅŸ cÃ¼mleleri kurma
-â€¢ Teknik terimleri hem TÃ¼rkÃ§e hem Ä°ngilizce yaz (Kennedy Class I / SÄ±nÄ±f I)
-â€¢ KullanÄ±cÄ±nÄ±n hata ve gÃ¼nlÃ¼k iÅŸ verileri varsa mutlaka dikkate al ve kiÅŸiselleÅŸtir
-â€¢ EÄŸer hata geÃ§miÅŸinden tekrar eden bir sorun gÃ¶rÃ¼yorsan proaktif olarak belirt
-â€¢ SayÄ±sal parametre sorusunda net deÄŸerler ver (0.5mm, 1200Â°C gibi)
-â€¢ YanÄ±tlarÄ± maddeli, okunmasÄ± kolay formatta ver${contextBlock}`;
+DAVRANIŞ KURALLARI:
+• Türkçe yanıt ver
+• Doğrudan, teknik ve pratik ol — gereksiz giriş cümleleri kurma
+• Teknik terimleri hem Türkçe hem İngilizce yaz (Kennedy Class I / Sınıf I)
+• Kullanıcının hata ve günlük iş verileri varsa mutlaka dikkate al ve kişiselleştir
+• Eğer hata geçmişinden tekrar eden bir sorun görüyorsan proaktif olarak belirt
+• Sayısal parametre sorusunda net değerler ver (0.5mm, 1200°C gibi)
+• Yanıtları maddeli, okunması kolay formatta ver${contextBlock}`;
 
-    // Anthropic API Ã§aÄŸrÄ±sÄ±
+    // Anthropic API çağrısı
     const messages = asistanHistory.slice(-10); // son 10 mesaj
 
     const {data:{session:sess}} = await sb.auth.getSession();
@@ -159,7 +159,7 @@ DAVRANIÅ KURALLARI:
         'Authorization': 'Bearer ' + (sess?.access_token || '')
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 1500,
         system: systemPrompt,
         messages: messages
@@ -168,7 +168,7 @@ DAVRANIÅ KURALLARI:
 
     const data = await res.json();
 
-    // Typing kaldÄ±r
+    // Typing kaldır
     const typingEl = document.getElementById(typingId);
     if (typingEl) typingEl.remove();
 
@@ -177,15 +177,15 @@ DAVRANIÅ KURALLARI:
       addAsistanBubble(reply, 'ai');
       asistanHistory.push({ role: 'assistant', content: reply });
     } else if (data.error) {
-      addAsistanBubble(`âŒ API HatasÄ±: ${data.error.message}`, 'ai');
+      addAsistanBubble(`? API Hatası: ${data.error.message}`, 'ai');
     } else {
-      addAsistanBubble('âŒ YanÄ±t alÄ±namadÄ±. API anahtarÄ±nÄ±zÄ± kontrol edin.', 'ai');
+      addAsistanBubble('? Yanıt alınamadı. API anahtarınızı kontrol edin.', 'ai');
     }
 
   } catch(err) {
     const typingEl = document.getElementById(typingId);
     if (typingEl) typingEl.remove();
-    addAsistanBubble(`âŒ BaÄŸlantÄ± hatasÄ±: ${err.message}`, 'ai');
+    addAsistanBubble(`? Bağlantı hatası: ${err.message}`, 'ai');
     console.error('Asistan hata:', err);
   }
 

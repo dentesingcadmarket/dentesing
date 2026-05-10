@@ -1,6 +1,6 @@
-ï»¿// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// YOL HARÄ°TAM â€” Adaptif AI HaftalÄ±k Sistem
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ======================================================
+// YOL HARİTAM — Adaptif AI Haftalık Sistem
+// ======================================================
 const YH_STORE = 'yolharita_v2';
 let yhState = { done:false, profile:{}, haftalar:[], tamamlanan:[], gorevTam:{}, msgs:[] };
 let yhObStep = 0, yhObSel = null, yhOpenHafta = null;
@@ -8,79 +8,79 @@ let yhObStep = 0, yhObSel = null, yhOpenHafta = null;
 const YH_SORULAR = [
   {
     key:'calisma', multi:false,
-    q:'Åu an Ã§alÄ±ÅŸma durumun nedir?',
-    sub:'Yol haritanÄ± durumuna gÃ¶re kiÅŸiselleÅŸtireceÄŸiz',
+    q:'Şu an çalışma durumun nedir?',
+    sub:'Yol haritanı durumuna göre kişiselleştireceğiz',
     opts:[
-      {v:'lab_calisan',     l:'Lab Ã§alÄ±ÅŸanÄ±yÄ±m',          d:'Bir laboratuvarda Ã¼cretli Ã§alÄ±ÅŸÄ±yorum'},
-      {v:'freelancer',      l:'Freelancer Ã§alÄ±ÅŸÄ±yorum',    d:'BaÄŸÄ±msÄ±z iÅŸ alÄ±yorum'},
-      {v:'is_ariyor',       l:'Ä°ÅŸ arÄ±yorum',               d:'Yeni bir pozisyon bulmak istiyorum'},
-      {v:'lab_kuruyor',     l:'Lab kuruyorum',             d:'Kendi iÅŸimi kurmak Ã¼zereyim'},
-      {v:'lab_sahibi',      l:'Lab sahibiyim',             d:'Zaten kendi iÅŸletmemi yÃ¶netiyorum'},
-      {v:'ogrenci',         l:'Ã–ÄŸrenci / Yeni mezun',      d:'HenÃ¼z kariyerimin baÅŸÄ±ndayÄ±m'},
+      {v:'lab_calisan',     l:'Lab çalışanıyım',          d:'Bir laboratuvarda ücretli çalışıyorum'},
+      {v:'freelancer',      l:'Freelancer çalışıyorum',    d:'Bağımsız iş alıyorum'},
+      {v:'is_ariyor',       l:'İş arıyorum',               d:'Yeni bir pozisyon bulmak istiyorum'},
+      {v:'lab_kuruyor',     l:'Lab kuruyorum',             d:'Kendi işimi kurmak üzereyim'},
+      {v:'lab_sahibi',      l:'Lab sahibiyim',             d:'Zaten kendi işletmemi yönetiyorum'},
+      {v:'ogrenci',         l:'Öğrenci / Yeni mezun',      d:'Henüz kariyerimin başındayım'},
     ]
   },
   {
     key:'deneyim', multi:false,
     q:'Toplam mesleki deneyimin ne kadar?',
-    sub:'EÄŸitim sÃ¼reniz dahil',
+    sub:'Eğitim süreniz dahil',
     opts:[
-      {v:'0_1',  l:'0â€“1 yÄ±l',   d:'Yeni baÅŸlÄ±yorum'},
-      {v:'1_3',  l:'1â€“3 yÄ±l',   d:'Temel becerileri Ã¶ÄŸrendim'},
-      {v:'3_5',  l:'3â€“5 yÄ±l',   d:'Orta dÃ¼zey deneyim'},
-      {v:'5_10', l:'5â€“10 yÄ±l',  d:'SektÃ¶rÃ¼ iyi tanÄ±yorum'},
-      {v:'10p',  l:'10+ yÄ±l',   d:'SektÃ¶rde kÃ¶klÃ¼ deneyim'},
+      {v:'0_1',  l:'0–1 yıl',   d:'Yeni başlıyorum'},
+      {v:'1_3',  l:'1–3 yıl',   d:'Temel becerileri öğrendim'},
+      {v:'3_5',  l:'3–5 yıl',   d:'Orta düzey deneyim'},
+      {v:'5_10', l:'5–10 yıl',  d:'Sektörü iyi tanıyorum'},
+      {v:'10p',  l:'10+ yıl',   d:'Sektörde köklü deneyim'},
     ]
   },
   {
     key:'alan', multi:true,
-    q:'Hangi alanlarda Ã§alÄ±ÅŸÄ±yorsun? (birden fazla seÃ§ebilirsin)',
-    sub:'Ana uzmanlÄ±k alanlarÄ±nÄ± belirt',
+    q:'Hangi alanlarda çalışıyorsun? (birden fazla seçebilirsin)',
+    sub:'Ana uzmanlık alanlarını belirt',
     opts:[
       {v:'zirkonyum',   l:'Zirkonyum kaplama',       d:'CAD/CAM ile tam seramik'},
-      {v:'pfm',         l:'Metal destekli porselen',  d:'PFM kÃ¶prÃ¼ ve kron'},
-      {v:'total_protez',l:'Total protez',              d:'Tam diÅŸsiz hastalar'},
-      {v:'parsiyel',    l:'Parsiyel protez',           d:'BÃ¶lÃ¼mlÃ¼ hareketli protez'},
-      {v:'implant',     l:'Ä°mplant Ã¼st yapÄ±',          d:'Kron, kÃ¶prÃ¼, overdenture'},
-      {v:'ortodonti',   l:'Ortodonti / Aligner',       d:'Tel, plak, ÅŸeffaf aligner'},
-      {v:'cad_cam',     l:'CAD/CAM & 3D TasarÄ±m',      d:'Exocad, 3Shape, frezeleme'},
+      {v:'pfm',         l:'Metal destekli porselen',  d:'PFM köprü ve kron'},
+      {v:'total_protez',l:'Total protez',              d:'Tam dişsiz hastalar'},
+      {v:'parsiyel',    l:'Parsiyel protez',           d:'Bölümlü hareketli protez'},
+      {v:'implant',     l:'İmplant üst yapı',          d:'Kron, köprü, overdenture'},
+      {v:'ortodonti',   l:'Ortodonti / Aligner',       d:'Tel, plak, şeffaf aligner'},
+      {v:'cad_cam',     l:'CAD/CAM & 3D Tasarım',      d:'Exocad, 3Shape, frezeleme'},
       {v:'estetik',     l:'Estetik restorasyonlar',    d:'Veneer, e.max, kompozit'},
     ]
   },
   {
     key:'hedef', multi:false,
-    q:'Åu an odaklandÄ±ÄŸÄ±n ana hedefin ne?',
-    sub:'En Ã¶ncelikli olanÄ± seÃ§',
+    q:'Şu an odaklandığın ana hedefin ne?',
+    sub:'En öncelikli olanı seç',
     opts:[
-      {v:'hiz_kalite',   l:'HÄ±z ve kaliteyi artÄ±rmak',  d:'Daha az sÃ¼rede daha iyi iÅŸ'},
-      {v:'gelir',        l:'GelirimÄ± artÄ±rmak',          d:'MaaÅŸ veya serbest kazanÃ§'},
-      {v:'uzmanlasmak',  l:'Belirli alanda uzmanlaÅŸmak', d:'Derinlemesine teknik bilgi'},
-      {v:'is_kurmak',    l:'Kendi iÅŸimi kurmak',         d:'Lab veya serbest Ã§alÄ±ÅŸma'},
-      {v:'dijital',      l:'Dijital sistemlere geÃ§mek',  d:'CAD/CAM, 3D baskÄ±, tarama'},
-      {v:'yonetim',      l:'Ekip yÃ¶netimi Ã¶ÄŸrenmek',     d:'Liderlik ve operasyon'},
+      {v:'hiz_kalite',   l:'Hız ve kaliteyi artırmak',  d:'Daha az sürede daha iyi iş'},
+      {v:'gelir',        l:'Gelirimı artırmak',          d:'Maaş veya serbest kazanç'},
+      {v:'uzmanlasmak',  l:'Belirli alanda uzmanlaşmak', d:'Derinlemesine teknik bilgi'},
+      {v:'is_kurmak',    l:'Kendi işimi kurmak',         d:'Lab veya serbest çalışma'},
+      {v:'dijital',      l:'Dijital sistemlere geçmek',  d:'CAD/CAM, 3D baskı, tarama'},
+      {v:'yonetim',      l:'Ekip yönetimi öğrenmek',     d:'Liderlik ve operasyon'},
     ]
   },
   {
     key:'engel', multi:false,
-    q:'Åu an seni en Ã§ok zorlayan ÅŸey ne?',
-    sub:'DÃ¼rÃ¼st cevap daha iyi bir plan Ã§Ä±karÄ±r',
+    q:'Şu an seni en çok zorlayan şey ne?',
+    sub:'Dürüst cevap daha iyi bir plan çıkarır',
     opts:[
-      {v:'teknik',     l:'Teknik bilgi eksikliÄŸi',  d:'BazÄ± prosedÃ¼rler hala zor'},
-      {v:'hiz',        l:'YavaÅŸ Ã§alÄ±ÅŸmak',           d:'Ä°stediÄŸim hÄ±zda Ã¼retemiyorum'},
-      {v:'musteri',    l:'MÃ¼ÅŸteri / patron iliÅŸkisi', d:'Ä°letiÅŸim ve fiyatlandÄ±rma sorunu'},
-      {v:'motivasyon', l:'Motivasyon kaybÄ±',          d:'YÃ¶nÃ¼mÃ¼ bulamÄ±yorum'},
-      {v:'sermaye',    l:'Sermaye / ekipman eksikliÄŸi',d:'YatÄ±rÄ±m yapamÄ±yorum'},
-      {v:'pazar',      l:'Pazar bulamÄ±yorum',          d:'Yeterli iÅŸ yok / mÃ¼ÅŸteri yok'},
+      {v:'teknik',     l:'Teknik bilgi eksikliği',  d:'Bazı prosedürler hala zor'},
+      {v:'hiz',        l:'Yavaş çalışmak',           d:'İstediğim hızda üretemiyorum'},
+      {v:'musteri',    l:'Müşteri / patron ilişkisi', d:'İletişim ve fiyatlandırma sorunu'},
+      {v:'motivasyon', l:'Motivasyon kaybı',          d:'Yönümü bulamıyorum'},
+      {v:'sermaye',    l:'Sermaye / ekipman eksikliği',d:'Yatırım yapamıyorum'},
+      {v:'pazar',      l:'Pazar bulamıyorum',          d:'Yeterli iş yok / müşteri yok'},
     ]
   },
   {
     key:'zaman', multi:false,
-    q:'Haftada geliÅŸime kaÃ§ saat ayÄ±rabilirsin?',
-    sub:'GerÃ§ekÃ§i ol â€” plan buna gÃ¶re yapÄ±lÄ±r',
+    q:'Haftada gelişime kaç saat ayırabilirsin?',
+    sub:'Gerçekçi ol — plan buna göre yapılır',
     opts:[
-      {v:'1_2',  l:'1â€“2 saat',   d:'Ã‡ok yoÄŸun, kÄ±sa ama etkili gÃ¶revler'},
-      {v:'3_5',  l:'3â€“5 saat',   d:'Orta tempo, dengeli plan'},
-      {v:'5_10', l:'5â€“10 saat',  d:'KararlÄ± ilerleme, kapsamlÄ± gÃ¶revler'},
-      {v:'10p',  l:'10+ saat',   d:'Tam gaz, yoÄŸun dÃ¶nÃ¼ÅŸÃ¼m planÄ±'},
+      {v:'1_2',  l:'1–2 saat',   d:'Çok yoğun, kısa ama etkili görevler'},
+      {v:'3_5',  l:'3–5 saat',   d:'Orta tempo, dengeli plan'},
+      {v:'5_10', l:'5–10 saat',  d:'Kararlı ilerleme, kapsamlı görevler'},
+      {v:'10p',  l:'10+ saat',   d:'Tam gaz, yoğun dönüşüm planı'},
     ]
   },
 ];
@@ -99,7 +99,7 @@ function yhInit() {
   if (yhState.done) { yhShowMain(); } else { yhShowOnboard(); }
 }
 
-// â”€â”€ ONBOARD â”€â”€
+// ¦¦ ONBOARD ¦¦
 function yhShowOnboard() {
   document.getElementById('yh-onboard-panel').style.display = 'flex';
   document.getElementById('yh-main-panel').style.display = 'none';
@@ -122,7 +122,7 @@ function yhRenderStep() {
         <div style="font-weight:600;font-size:13px;margin-bottom:2px">${o.l}</div>
         <div style="font-size:11.5px;opacity:.65">${o.d}</div>
       </div>`
-    ).join('') + '<div style="grid-column:1/-1;font-size:11px;color:var(--text3);text-align:center;margin-top:4px">Birden fazla seÃ§ebilirsin</div>';
+    ).join('') + '<div style="grid-column:1/-1;font-size:11px;color:var(--text3);text-align:center;margin-top:4px">Birden fazla seçebilirsin</div>';
   } else {
     document.getElementById('yh-ob-opts').innerHTML = s.opts.map(o =>
       `<div class="yh-option" data-val="${o.v}" onclick="yhPickOpt(this,'${o.v}')">
@@ -162,16 +162,16 @@ async function yhObNext() {
   } else {
     // Generating state
     document.getElementById('yh-prog').style.width = '90%';
-    document.getElementById('yh-ob-icon').textContent = 'â³';
-    document.getElementById('yh-ob-q').textContent = 'KiÅŸisel haritanÄ± oluÅŸturuyorumâ€¦';
-    document.getElementById('yh-ob-s').textContent = 'Bu birkaÃ§ saniye sÃ¼rebilir';
+    document.getElementById('yh-ob-icon').textContent = '?';
+    document.getElementById('yh-ob-q').textContent = 'Kişisel haritanı oluşturuyorum…';
+    document.getElementById('yh-ob-s').textContent = 'Bu birkaç saniye sürebilir';
     document.getElementById('yh-ob-opts').innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:20px 0;color:var(--text3);font-size:13px;">
       <div style="display:flex;gap:5px;justify-content:center;margin-bottom:12px">
         <span style="width:8px;height:8px;border-radius:50%;background:var(--m1b);animation:yhDot 1.2s infinite"></span>
         <span style="width:8px;height:8px;border-radius:50%;background:var(--m1b);animation:yhDot 1.2s .2s infinite"></span>
         <span style="width:8px;height:8px;border-radius:50%;background:var(--m1b);animation:yhDot 1.2s .4s infinite"></span>
       </div>
-      AI profilinizi analiz ediyor ve haftalÄ±k gÃ¶revleri kiÅŸiselleÅŸtiriyorâ€¦
+      AI profilinizi analiz ediyor ve haftalık görevleri kişiselleştiriyor…
     </div>`;
     document.getElementById('yh-ob-btn').style.display = 'none';
     await yhGenerateMap();
@@ -182,37 +182,37 @@ async function yhGenerateMap() {
   const p = yhState.profile;
   const alanlar = (p.alan||'').split(',').map(v=>({
     zirkonyum:'Zirkonyum kaplama',pfm:'PFM',total_protez:'Total protez',
-    parsiyel:'Parsiyel protez',implant:'Ä°mplant Ã¼st yapÄ±',ortodonti:'Ortodonti/Aligner',
+    parsiyel:'Parsiyel protez',implant:'İmplant üst yapı',ortodonti:'Ortodonti/Aligner',
     cad_cam:'CAD/CAM & 3D',estetik:'Estetik restorasyonlar'
   }[v]||v)).filter(Boolean).join(', ');
 
-  const prompt = `Sen uzman bir diÅŸ teknisyeni mentoru ve kariyer koÃ§usun. AÅŸaÄŸÄ±daki profile gÃ¶re 8 haftalÄ±k KÄ°ÅÄ°SEL yol haritasÄ± oluÅŸtur.
+  const prompt = `Sen uzman bir diş teknisyeni mentoru ve kariyer koçusun. Aşağıdaki profile göre 8 haftalık KİŞİSEL yol haritası oluştur.
 
-KULLANICI PROFÄ°LÄ°:
-- Ã‡alÄ±ÅŸma durumu: ${({'lab_calisan':'Lab Ã§alÄ±ÅŸanÄ±','freelancer':'Freelancer','is_ariyor':'Ä°ÅŸ arÄ±yor','lab_kuruyor':'Lab kuruyor','lab_sahibi':'Lab sahibi','ogrenci':'Ã–ÄŸrenci/Yeni mezun'}[p.calisma]||p.calisma)}
-- Deneyim: ${({'0_1':'0-1 yÄ±l','1_3':'1-3 yÄ±l','3_5':'3-5 yÄ±l','5_10':'5-10 yÄ±l','10p':'10+ yÄ±l'}[p.deneyim]||p.deneyim)}
-- UzmanlÄ±k alanlarÄ±: ${alanlar||'BelirtilmemiÅŸ'}
-- Ana hedef: ${({'hiz_kalite':'HÄ±z ve kaliteyi artÄ±rmak','gelir':'Gelir artÄ±rmak','uzmanlasmak':'UzmanlaÅŸmak','is_kurmak':'Ä°ÅŸ kurmak','dijital':'Dijital sistemlere geÃ§mek','yonetim':'Ekip yÃ¶netimi'}[p.hedef]||p.hedef)}
-- Åu an zorluÄŸu: ${({'teknik':'Teknik bilgi eksikliÄŸi','hiz':'YavaÅŸ Ã§alÄ±ÅŸma','musteri':'MÃ¼ÅŸteri/patron iliÅŸkisi','motivasyon':'Motivasyon kaybÄ±','sermaye':'Sermaye eksikliÄŸi','pazar':'Pazar bulamÄ±yor'}[p.engel]||p.engel)}
-- HaftalÄ±k sÃ¼re: ${({'1_2':'1-2 saat','3_5':'3-5 saat','5_10':'5-10 saat','10p':'10+ saat'}[p.zaman]||p.zaman)}
+KULLANICI PROFİLİ:
+- Çalışma durumu: ${({'lab_calisan':'Lab çalışanı','freelancer':'Freelancer','is_ariyor':'İş arıyor','lab_kuruyor':'Lab kuruyor','lab_sahibi':'Lab sahibi','ogrenci':'Öğrenci/Yeni mezun'}[p.calisma]||p.calisma)}
+- Deneyim: ${({'0_1':'0-1 yıl','1_3':'1-3 yıl','3_5':'3-5 yıl','5_10':'5-10 yıl','10p':'10+ yıl'}[p.deneyim]||p.deneyim)}
+- Uzmanlık alanları: ${alanlar||'Belirtilmemiş'}
+- Ana hedef: ${({'hiz_kalite':'Hız ve kaliteyi artırmak','gelir':'Gelir artırmak','uzmanlasmak':'Uzmanlaşmak','is_kurmak':'İş kurmak','dijital':'Dijital sistemlere geçmek','yonetim':'Ekip yönetimi'}[p.hedef]||p.hedef)}
+- Şu an zorluğu: ${({'teknik':'Teknik bilgi eksikliği','hiz':'Yavaş çalışma','musteri':'Müşteri/patron ilişkisi','motivasyon':'Motivasyon kaybı','sermaye':'Sermaye eksikliği','pazar':'Pazar bulamıyor'}[p.engel]||p.engel)}
+- Haftalık süre: ${({'1_2':'1-2 saat','3_5':'3-5 saat','5_10':'5-10 saat','10p':'10+ saat'}[p.zaman]||p.zaman)}
 
 KURALLAR:
-1. Her hafta 6-7 SOMUT ve YAPILABILIR gÃ¶rev. Sadece "oku/araÅŸtÄ±r" deÄŸil, gerÃ§ek yapma eylemi (kaydet, uygula, Ã¶lÃ§, dene, analiz et, yaz, karÅŸÄ±laÅŸtÄ±r).
-2. Haftalar arasÄ±nda mantÄ±ksal ilerleme â€” temellerden uzmanlÄ±ÄŸa.
-3. Profildeki duruma Ã–ZEL: Freelancer iÃ§in mÃ¼ÅŸteri yÃ¶netimi, lab Ã§alÄ±ÅŸanÄ± iÃ§in verimlilik, iÅŸ arayan iÃ§in portfÃ¶y.
-4. Her hafta gerÃ§ekten 3-7 saat iÅŸ gerektirecek yoÄŸunlukta. Tek gÃ¼nde bitmeyecek gÃ¶revler.
-5. ZorluÄŸa (${p.engel}) ve hedefe (${p.hedef}) doÄŸrudan cevap veren gÃ¶revler ekle.
+1. Her hafta 6-7 SOMUT ve YAPILABILIR görev. Sadece "oku/araştır" değil, gerçek yapma eylemi (kaydet, uygula, ölç, dene, analiz et, yaz, karşılaştır).
+2. Haftalar arasında mantıksal ilerleme — temellerden uzmanlığa.
+3. Profildeki duruma ÖZEL: Freelancer için müşteri yönetimi, lab çalışanı için verimlilik, iş arayan için portföy.
+4. Her hafta gerçekten 3-7 saat iş gerektirecek yoğunlukta. Tek günde bitmeyecek görevler.
+5. Zorluğa (${p.engel}) ve hedefe (${p.hedef}) doğrudan cevap veren görevler ekle.
 
-SADECE aÅŸaÄŸÄ±daki JSON formatÄ±nda cevap ver, baÅŸka hiÃ§bir ÅŸey yazma:
+SADECE aşağıdaki JSON formatında cevap ver, başka hiçbir şey yazma:
 {
-  "ozet": "KullanÄ±cÄ± iÃ§in 1-2 cÃ¼mle kiÅŸisel plan Ã¶zeti",
+  "ozet": "Kullanıcı için 1-2 cümle kişisel plan özeti",
   "haftalar": [
     {
       "hafta": 1,
-      "baslik": "KÄ±sa motive edici baÅŸlÄ±k (max 4 kelime)",
-      "odak": "Bu haftanÄ±n tek cÃ¼mle odaÄŸÄ±",
+      "baslik": "Kısa motive edici başlık (max 4 kelime)",
+      "odak": "Bu haftanın tek cümle odağı",
       "gorevler": [
-        { "baslik": "GÃ¶rev adÄ± (kÄ±sa)", "detay": "NasÄ±l yapÄ±lacaÄŸÄ±nÄ±n net aÃ§Ä±klamasÄ± â€” somut adÄ±mlarla" }
+        { "baslik": "Görev adı (kısa)", "detay": "Nasıl yapılacağının net açıklaması — somut adımlarla" }
       ]
     }
   ]
@@ -226,7 +226,7 @@ SADECE aÅŸaÄŸÄ±daki JSON formatÄ±nda cevap ver, baÅŸka hiÃ§bir ÅŸey yazma:
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + (yhSess?.access_token || '')
       },
-      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:5000, messages:[{ role:'user', content:prompt }] })
+      body: JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:5000, messages:[{ role:'user', content:prompt }] })
     });
     const data = await res.json();
     const raw = data.content.map(c => c.text||'').join('');
@@ -236,25 +236,25 @@ SADECE aÅŸaÄŸÄ±daki JSON formatÄ±nda cevap ver, baÅŸka hiÃ§bir ÅŸey yazma:
     yhState.done = true;
     yhState.tamamlanan = [];
     yhState.gorevTam = {};
-    yhState.msgs = [{ role:'ai', text:`HaritanÄ± oluÅŸturdum! ğŸ‰
+    yhState.msgs = [{ role:'ai', text:`Haritanı oluşturdum! ??
 
 ${parsed.ozet || ''}
 
-${yhState.haftalar.length} haftalÄ±k planÄ±n hazÄ±r. Hafta kartlarÄ±nÄ± tÄ±klayarak gÃ¶revleri gÃ¶r. Ä°stediÄŸin zaman bana revizyon veya soru sorabilirsin.` }];
+${yhState.haftalar.length} haftalık planın hazır. Hafta kartlarını tıklayarak görevleri gör. İstediğin zaman bana revizyon veya soru sorabilirsin.` }];
     yhSave();
     yhShowMain();
   } catch(e) {
     console.error('YH Generate error:', e);
-    document.getElementById('yh-ob-q').textContent = 'BaÄŸlantÄ± hatasÄ± oluÅŸtu';
-    document.getElementById('yh-ob-s').textContent = 'LÃ¼tfen tekrar dene';
+    document.getElementById('yh-ob-q').textContent = 'Bağlantı hatası oluştu';
+    document.getElementById('yh-ob-s').textContent = 'Lütfen tekrar dene';
     document.getElementById('yh-ob-btn').style.display = 'block';
-    document.getElementById('yh-ob-btn').textContent = 'â†º Tekrar Dene';
+    document.getElementById('yh-ob-btn').textContent = '? Tekrar Dene';
     document.getElementById('yh-ob-opts').innerHTML = '';
     yhObStep = YH_SORULAR.length; // re-trigger generate on click
   }
 }
 
-// â”€â”€ ANA HARÄ°TA â”€â”€
+// ¦¦ ANA HARİTA ¦¦
 function yhShowMain() {
   document.getElementById('yh-onboard-panel').style.display = 'none';
   document.getElementById('yh-main-panel').style.display = 'block';
@@ -284,7 +284,7 @@ function yhRenderGrid() {
     const isDone = tam.includes(i);
     const isOpen = i <= tam.length;
     const cls = isDone ? 'done' : isOpen ? 'active' : 'locked';
-    const ico = isDone ? 'âœ…' : isOpen ? 'â–¶' : 'ğŸ”’';
+    const ico = isDone ? '?' : isOpen ? '?' : '??';
     const click = isOpen ? `onclick="yhOpenModal(${i})"` : '';
     const gt = yhState.gorevTam[i] || [];
     const total = (h.gorevler||[]).length;
@@ -299,7 +299,7 @@ function yhRenderGrid() {
   }).join('');
 }
 
-// â”€â”€ MODAL â”€â”€
+// ¦¦ MODAL ¦¦
 function yhOpenModal(idx) {
   yhOpenHafta = idx;
   const h = yhState.haftalar[idx];
@@ -312,7 +312,7 @@ function yhOpenModal(idx) {
   document.getElementById('yh-m-gorevler').innerHTML = gorevler.map((g,gi) => {
     const done = gt.includes(gi);
     return `<div class="yh-gorev-item">
-      <div class="yh-gorev-cb ${done?'checked':''}" onclick="yhToggle(${idx},${gi})">${done?'âœ“':''}</div>
+      <div class="yh-gorev-cb ${done?'checked':''}" onclick="yhToggle(${idx},${gi})">${done?'?':''}</div>
       <div>
         <div class="yh-gorev-text" style="${done?'text-decoration:line-through;opacity:.5':''}">${g.baslik}</div>
         <div class="yh-gorev-detail">${g.detay||''}</div>
@@ -320,7 +320,7 @@ function yhOpenModal(idx) {
     </div>`;
   }).join('');
   const pct = gorevler.length > 0 ? Math.round((gt.length/gorevler.length)*100) : 0;
-  document.getElementById('yh-m-progress').textContent = `${gt.length} / ${gorevler.length} gÃ¶rev tamamlandÄ± (%${pct})`;
+  document.getElementById('yh-m-progress').textContent = `${gt.length} / ${gorevler.length} görev tamamlandı (%${pct})`;
   const allDone = gorevler.length > 0 && gt.length >= gorevler.length;
   const hDone = (yhState.tamamlanan||[]).includes(idx);
   document.getElementById('yh-m-bitir-btn').style.display = (allDone && !hDone) ? 'block' : 'none';
@@ -346,14 +346,14 @@ function yhHaftaBitir() {
   yhRenderGrid();
   const nextH = yhState.haftalar[yhState.tamamlanan.length];
   const msg = nextH
-    ? `Hafta ${yhOpenHafta+1} tamamlandÄ±! ğŸ‰ Tebrikler!
+    ? `Hafta ${yhOpenHafta+1} tamamlandı! ?? Tebrikler!
 
-SÄ±radaki: "${nextH.baslik}" â€” "${nextH.odak}"
+Sıradaki: "${nextH.baslik}" — "${nextH.odak}"
 
-Hafta kartÄ±nÄ± tÄ±klayarak baÅŸlayabilirsin. HazÄ±r olduÄŸunda bildir!`
-    : `TÃ¼m 8 haftayÄ± tamamladÄ±n! ğŸ† Bu inanÄ±lmaz bir baÅŸarÄ±.
+Hafta kartını tıklayarak başlayabilirsin. Hazır olduğunda bildir!`
+    : `Tüm 8 haftayı tamamladın! ?? Bu inanılmaz bir başarı.
 
-Bana bundan sonra ne yapmak istediÄŸini yaz â€” yeni hedefler belirleyelim!`;
+Bana bundan sonra ne yapmak istediğini yaz — yeni hedefler belirleyelim!`;
   yhState.msgs.push({ role:'ai', text:msg });
   yhSave();
   yhRenderMsgs();
@@ -363,7 +363,7 @@ function yhCloseModal() {
   document.getElementById('yh-modal').classList.remove('open');
 }
 
-// â”€â”€ CHAT â”€â”€
+// ¦¦ CHAT ¦¦
 function yhRenderMsgs() {
   const msgs = yhState.msgs||[];
   const c = document.getElementById('yh-msgs');
@@ -395,7 +395,7 @@ async function yhSend() {
 
   try {
     const p = yhState.profile;
-    const sys = `Sen diÅŸ teknisyeni geliÅŸim koÃ§usun. KullanÄ±cÄ± profili: ${JSON.stringify(p)}. Tamamlanan haftalar: ${yhState.tamamlanan?.length||0}/${yhState.haftalar?.length||0}. Aktif hafta planÄ±: ${JSON.stringify((yhState.haftalar||[]).map(h=>({h:h.hafta,b:h.baslik,o:h.odak})))}. TÃ¼rkÃ§e, samimi ve motive edici cevap ver. Revizyon isterse veya ek gÃ¶rev talep ederse yardÄ±m et. 2-4 cÃ¼mle yeterli.`;
+    const sys = `Sen diş teknisyeni gelişim koçusun. Kullanıcı profili: ${JSON.stringify(p)}. Tamamlanan haftalar: ${yhState.tamamlanan?.length||0}/${yhState.haftalar?.length||0}. Aktif hafta planı: ${JSON.stringify((yhState.haftalar||[]).map(h=>({h:h.hafta,b:h.baslik,o:h.odak})))}. Türkçe, samimi ve motive edici cevap ver. Revizyon isterse veya ek görev talep ederse yardım et. 2-4 cümle yeterli.`;
     const histMsgs = (yhState.msgs||[]).slice(-8).map(m => ({ role: m.role==='user'?'user':'assistant', content: m.text }));
     const {data:{session:yhSess2}} = await sb.auth.getSession();
     const res = await fetch(PROXY_URL, {
@@ -404,7 +404,7 @@ async function yhSend() {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + (yhSess2?.access_token || '')
       },
-      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:600, system:sys, messages:histMsgs })
+      body: JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:600, system:sys, messages:histMsgs })
     });
     const data = await res.json();
     const reply = data.content.map(c=>c.text||'').join('').trim();
@@ -414,7 +414,7 @@ async function yhSend() {
     yhRenderMsgs();
   } catch(e) {
     document.getElementById('yh-typing-el')?.remove();
-    yhState.msgs.push({ role:'ai', text:'BaÄŸlantÄ± hatasÄ±. Tekrar dene.' });
+    yhState.msgs.push({ role:'ai', text:'Bağlantı hatası. Tekrar dene.' });
     yhRenderMsgs();
   }
   document.getElementById('yh-send-btn').disabled = false;

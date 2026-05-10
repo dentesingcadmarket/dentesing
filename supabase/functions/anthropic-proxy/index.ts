@@ -32,12 +32,20 @@ serve(async (req) => {
       })
     }
 
+    const anthropicKey = Deno.env.get('ANTHROPIC_KEY') || Deno.env.get('ANTHROPIC_API_KEY')
+    if (!anthropicKey) {
+      return new Response(
+        JSON.stringify({ error: { message: 'ANTHROPIC_KEY ortam değişkeni Supabase Edge Functions ayarlarında tanımlı değil. Supabase Dashboard → Edge Functions → anthropic-proxy → Environment Variables bölümünden ekleyin.' } }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
     const body = await req.json()
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': Deno.env.get('ANTHROPIC_KEY')!,
+        'x-api-key': anthropicKey,
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify(body),
@@ -45,6 +53,7 @@ serve(async (req) => {
 
     const data = await res.json()
     return new Response(JSON.stringify(data), {
+      status: res.status,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     })
 

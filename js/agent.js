@@ -1,6 +1,6 @@
-﻿// ══════════════════════════════════════════
-// AI AGENT — YOL HARİTASI MOTORU
-// ══════════════════════════════════════════
+// ==========================================
+// AI AGENT � YOL HAR�TASI MOTORU
+// ==========================================
 
 // Agent state
 let agentState = {
@@ -9,31 +9,31 @@ let agentState = {
   done: false
 };
 
-// Soru akışı
+// Soru ak���
 const agentFlow = [
   {
     key: 'deneyim',
-    question: 'Diş teknisyeni olarak kaç yıldır çalışıyorsun?',
-    quick: ['Yeni başladım (0-1 yıl)', '1-3 yıl', '3-5 yıl', '5+ yıl']
+    question: 'Di� teknisyeni olarak ka� y�ld�r �al���yorsun?',
+    quick: ['Yeni ba�lad�m (0-1 y�l)', '1-3 y�l', '3-5 y�l', '5+ y�l']
   },
   {
     key: 'yazilim',
-    question: 'Hangi CAD yazılımını kullanıyorsun veya öğrenmek istiyorsun?',
-    quick: ['Exocad', '3Shape', 'Her ikisi', 'Henüz bilmiyorum']
+    question: 'Hangi CAD yaz�l�m�n� kullan�yorsun veya ��renmek istiyorsun?',
+    quick: ['Exocad', '3Shape', 'Her ikisi', 'Hen�z bilmiyorum']
   },
   {
     key: 'hedef',
-    question: 'En büyük hedefin ne?',
-    quick: ['Daha hızlı çalışmak', 'Hata oranını düşürmek', 'Freelance başlamak', 'Kendi işletmemi kurmak']
+    question: 'En b�y�k hedefin ne?',
+    quick: ['Daha h�zl� �al��mak', 'Hata oran�n� d���rmek', 'Freelance ba�lamak', 'Kendi i�letmemi kurmak']
   },
   {
     key: 'zorluk',
-    question: 'Şu an en çok nerede zorlanıyorsun?',
-    quick: ['Vaka süreleri', 'Tekrar eden hatalar', 'Müşteri bulmak', 'Fiyatlandırma']
+    question: '�u an en �ok nerede zorlan�yorsun?',
+    quick: ['Vaka s�releri', 'Tekrar eden hatalar', 'M��teri bulmak', 'Fiyatland�rma']
   },
   {
     key: 'sure',
-    question: 'Sisteme günde kaç dakika ayırabilirsin?',
+    question: 'Sisteme g�nde ka� dakika ay�rabilirsin?',
     quick: ['5-10 dakika', '15-20 dakika', '30+ dakika']
   }
 ];
@@ -73,11 +73,12 @@ async function sendAgentMessage() {
   if (!val) return;
   input.value = '';
 
-  // Kullanıcı mesajını ekle
+  // Kullan�c� mesaj�n� ekle
   addAgentMsg(val, 'user');
   document.getElementById('agent-quick-btns').innerHTML = '';
 
   const flow = agentFlow[agentState.step];
+  if (!flow) return;
   agentState.answers[flow.key] = val;
   agentState.step++;
 
@@ -92,14 +93,14 @@ async function sendAgentMessage() {
     addAgentMsg(next.question, 'ai');
     showQuickBtns(next.quick);
   } else {
-    // Tüm sorular bitti - yol haritası üret
-    addAgentMsg('Harika! Sana özel yol haritanı oluşturuyorum...', 'ai');
+    // T�m sorular bitti - yol haritas� �ret
+    addAgentMsg('Harika! Sana �zel yol haritan� olu�turuyorum...', 'ai');
     await new Promise(r => setTimeout(r, 600));
     const typingId2 = addTypingMsg();
     const roadmap = await generateRoadmap(agentState.answers);
     await new Promise(r => setTimeout(r, 1200));
     removeTypingMsg(typingId2);
-    addAgentMsg('Yol haritanız hazır! Aşağıda görebilirsiniz.', 'ai');
+    addAgentMsg('Yol haritan�z haz�r! A�a��da g�rebilirsiniz.', 'ai');
     agentState.done = true;
     agentState.roadmap = roadmap;
     localStorage.setItem('agent_state_' + (currentUser?.id||''), JSON.stringify(agentState));
@@ -109,17 +110,17 @@ async function sendAgentMessage() {
 }
 
 async function generateRoadmap(answers) {
-  // Proxy üzerinden AI ile yol haritası üret
+  // Proxy �zerinden AI ile yol haritas� �ret
   try {
-    const prompt = `Sen bir diş teknisyeni kariyer koçusun. Kullanıcı bilgileri:
+    const prompt = `Sen bir di� teknisyeni kariyer ko�usun. Kullan�c� bilgileri:
 - Deneyim: ${answers.deneyim}
-- Yazılım: ${answers.yazilim}
+- Yaz�l�m: ${answers.yazilim}
 - Hedef: ${answers.hedef}
 - Zorluk: ${answers.zorluk}
-- Günlük süre: ${answers.sure}
+- G�nl�k s�re: ${answers.sure}
 
-Bu kullanıcıya özel 5 adımlı kişisel gelişim yol haritası oluştur.
-JSON formatında yanıt ver, başka hiçbir şey yazma:
+Bu kullan�c�ya �zel 5 ad�ml� ki�isel geli�im yol haritas� olu�tur.
+JSON format�nda yan�t ver, ba�ka hi�bir �ey yazma:
 {
   "steps": [
     {"title": "...", "desc": "...", "week": "Hafta 1-2", "color": "#4a90d9"},
@@ -132,7 +133,7 @@ JSON formatında yanıt ver, başka hiçbir şey yazma:
       method:'POST',
       headers: {'Content-Type':'application/json','Authorization':'Bearer '+(agSess?.access_token||'')},
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 1000,
         messages: [{ role: 'user', content: prompt }]
       })
@@ -141,10 +142,10 @@ JSON formatında yanıt ver, başka hiçbir şey yazma:
     const text = data.content[0].text.replace(/```json|```/g,'').trim();
     return JSON.parse(text).steps;
   } catch(e) {
-    console.log('API hatası, offline mod:', e);
+    console.log('API hatas�, offline mod:', e);
   }
 
-  // Offline — kural bazlı yol haritası
+  // Offline � kural bazl� yol haritas�
   const isYeni = answers.deneyim?.includes('Yeni') || answers.deneyim?.includes('0-1');
   const hedef = answers.hedef || '';
   const zorluk = answers.zorluk || '';
@@ -154,65 +155,65 @@ JSON formatında yanıt ver, başka hiçbir şey yazma:
   if (isYeni) {
     steps.push({
       title: 'Temel Protokolleri Otur',
-      desc: 'Her iş için standart akış oluştur. Zirkonyum, PFM, implant — her biri için adım adım protokol yaz. Günlük takip sistemiyle tüm vakaları kaydet.',
+      desc: 'Her i� i�in standart ak�� olu�tur. Zirkonyum, PFM, implant � her biri i�in ad�m ad�m protokol yaz. G�nl�k takip sistemiyle t�m vakalar� kaydet.',
       week: 'Hafta 1-4',
       color: 'var(--m1b)'
     });
   } else {
     steps.push({
-      title: 'Mevcut Hataları Tespit Et',
-      desc: 'Son 1 ayın tekrar eden hatalarını listele. Hata günlüğüne gir, radar sistemi sana en kritik olanları gösterecek.',
+      title: 'Mevcut Hatalar� Tespit Et',
+      desc: 'Son 1 ay�n tekrar eden hatalar�n� listele. Hata g�nl���ne gir, radar sistemi sana en kritik olanlar� g�sterecek.',
       week: 'Hafta 1-2',
       color: 'var(--m1b)'
     });
   }
 
-  if (zorluk.includes('süre') || zorluk.includes('hızlı')) {
+  if (zorluk.includes('s�re') || zorluk.includes('h�zl�')) {
     steps.push({
-      title: 'Hız Analizi Yap',
-      desc: 'Hangi iş türünde yavaşsın? Hız analizi modülüne git, hedef süre vs gerçek süre farkına bak. Hedefini %10 azalt.',
+      title: 'H�z Analizi Yap',
+      desc: 'Hangi i� t�r�nde yava�s�n? H�z analizi mod�l�ne git, hedef s�re vs ger�ek s�re fark�na bak. Hedefini %10 azalt.',
       week: 'Hafta 2-4',
       color: 'var(--m2b)'
     });
   } else {
     steps.push({
-      title: 'Karar Protokollerini Öğren',
-      desc: 'Her vaka tipi için standart karar ağacı oluştur. Estetik mi fonksiyon mu? Sistem sana materyal ve kalınlık önerir.',
+      title: 'Karar Protokollerini ��ren',
+      desc: 'Her vaka tipi i�in standart karar a�ac� olu�tur. Estetik mi fonksiyon mu? Sistem sana materyal ve kal�nl�k �nerir.',
       week: 'Hafta 2-3',
       color: 'var(--m2b)'
     });
   }
 
   steps.push({
-    title: 'Dijital Tasarım Temelleri',
-    desc: 'CAD yazılımında protokol bazlı çalış. Her iş türü için şablon oluştur, tekrar eden adımları otomatikleştir.',
+    title: 'Dijital Tasar�m Temelleri',
+    desc: 'CAD yaz�l�m�nda protokol bazl� �al��. Her i� t�r� i�in �ablon olu�tur, tekrar eden ad�mlar� otomatikle�tir.',
     week: 'Hafta 4-8',
     color: 'var(--m2b)'
   });
 
-  if (hedef.includes('Freelance') || hedef.includes('işletme')) {
+  if (hedef.includes('Freelance') || hedef.includes('i�letme')) {
     steps.push({
-      title: 'Freelance Altyapı Kur',
-      desc: 'Fiyatlandırma sistemini oluştur. İlk 3 müşterini nasıl bulacağını planla. Portföy hazırla.',
+      title: 'Freelance Altyap� Kur',
+      desc: 'Fiyatland�rma sistemini olu�tur. �lk 3 m��terini nas�l bulaca��n� planla. Portf�y haz�rla.',
       week: 'Hafta 8-12',
       color: 'var(--m3b)'
     });
     steps.push({
-      title: 'İlk Müşteriyi Al',
-      desc: 'Dental klinik ağını harekete geçir. Sosyal medya profilini optimize et. Referans sistemi kur.',
+      title: '�lk M��teriyi Al',
+      desc: 'Dental klinik a��n� harekete ge�ir. Sosyal medya profilini optimize et. Referans sistemi kur.',
       week: 'Hafta 10-16',
       color: 'var(--m3b)'
     });
   } else {
     steps.push({
-      title: 'Ustanın Radarına Gir',
-      desc: 'Hatasız gün sayını artır, skor sisteminde Güvenilir seviyesine ulaş. Üstlerine proaktif rapor ver.',
+      title: 'Ustan�n Radar�na Gir',
+      desc: 'Hatas�z g�n say�n� art�r, skor sisteminde G�venilir seviyesine ula�. �stlerine proaktif rapor ver.',
       week: 'Hafta 8-12',
       color: 'var(--m3b)'
     });
     steps.push({
-      title: 'Uzmanlık Alanı Seç',
-      desc: 'Full arch, estetik veneer veya implant — bir alanda derinleş. O alanda ilde referans teknisyen ol.',
+      title: 'Uzmanl�k Alan� Se�',
+      desc: 'Full arch, estetik veneer veya implant � bir alanda derinle�. O alanda ilde referans teknisyen ol.',
       week: 'Hafta 12-20',
       color: 'var(--m3b)'
     });
@@ -239,7 +240,7 @@ function showRoadmap(steps) {
   '</div>';
 
   section.style.display = 'block';
-  // Agent kartını küçült
+  // Agent kart�n� k���lt
   document.getElementById('agent-messages').style.maxHeight = '160px';
 }
 
@@ -277,7 +278,7 @@ function resetAgent() {
   localStorage.removeItem('agent_state_' + (currentUser?.id||''));
   agentState = { step: 0, answers: {}, done: false };
   const messages = document.getElementById('agent-messages');
-  if (messages) messages.innerHTML = '<div class="agent-msg ai"><span>Merhaba! Yol haritanı yenilemek için birkaç soru sormam lazım. Hazır mısın?</span></div>';
+  if (messages) messages.innerHTML = '<div class="agent-msg ai"><span>Merhaba! Yol haritan� yenilemek i�in birka� soru sormam laz�m. Haz�r m�s�n?</span></div>';
   const inputRow = document.getElementById('agent-input-row');
   if (inputRow) inputRow.style.display = 'flex';
   document.getElementById('roadmap-section').style.display = 'none';

@@ -146,7 +146,7 @@ async function sendPierreMsg() {
         'Authorization': 'Bearer ' + (session?.access_token || '')
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 1500,
         system: PIERRE_SYSTEM,
         messages
@@ -156,15 +156,20 @@ async function sendPierreMsg() {
     const data = await res.json();
     document.getElementById(typingId)?.remove();
 
-    const reply = data.content?.[0]?.text || data.error?.message || 'Yanıt alınamadı.';
-    addPierreBubble(reply, 'ai');
-    pierreHistory.push({ role: 'assistant', content: reply });
-
-    const saveHistory = pierreHistory.map(m => ({
-      role: m.role,
-      content: typeof m.content === 'string' ? m.content : (Array.isArray(m.content) ? m.content.find(c=>c.type==='text')?.text || '[görsel]' : '[veri]')
-    }));
-    localStorage.setItem(PIERRE_STORAGE, JSON.stringify(saveHistory.slice(-30)));
+    if (data.error) {
+      addPierreBubble('❌ API Hatası: ' + data.error.message, 'ai');
+    } else if (data.content?.[0]?.text) {
+      const reply = data.content[0].text;
+      addPierreBubble(reply, 'ai');
+      pierreHistory.push({ role: 'assistant', content: reply });
+      const saveHistory = pierreHistory.map(m => ({
+        role: m.role,
+        content: typeof m.content === 'string' ? m.content : (Array.isArray(m.content) ? m.content.find(c=>c.type==='text')?.text || '[görsel]' : '[veri]')
+      }));
+      localStorage.setItem(PIERRE_STORAGE, JSON.stringify(saveHistory.slice(-30)));
+    } else {
+      addPierreBubble('❌ Yanıt alınamadı. Lütfen tekrar deneyin.', 'ai');
+    }
 
   } catch(err) {
     document.getElementById(typingId)?.remove();
