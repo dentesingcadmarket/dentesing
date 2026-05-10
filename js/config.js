@@ -22,7 +22,7 @@ const MOD_DATA = {
     features:[
       {icon:'📅',title:'Günlük İş Takibi',text:'Her vakayı kaydet. Süre, zorluk, hata sayısı — hepsi görünür hale gelir.'},
       {icon:'⚠️',title:'Hata Radarı',text:'Aynı hatayı iki kez yaparsan sistem seni uyarır. Tekrar eden hata = kritik.'},
-      {icon:'🧠',title:'Karar Motoru',text:'Estetik mi, fonksiyon mu? Materyal ve kalınlık otomatik önerilir.'},
+
       {icon:'📊',title:'KPI ve Hız Analizi',text:'Hedef süre vs gerçek süre. Hangi iş türünde yavaşsın? Sistem söyler.'},
       {icon:'🧬',title:'Skor Sistemi',text:'Her temiz gün puan kazanırsın. Seviyeni yükselt: Başlangıç → Güvenilir.'},
       {icon:'🎯',title:'Günlük Görev Motoru',text:'Bugün 3 iş, 1 karar, 1 hata kontrolü. Tamamlanma yüzdesi canlı görünür.'}

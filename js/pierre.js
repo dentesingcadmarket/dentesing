@@ -1,87 +1,98 @@
 // ══════════════════════════════════════════
-// PIERRE FACHUARD — Teknik Asistan Modül 2
+// D·CONSOLE TERMINAL — CAD Analiz Motoru
 // ══════════════════════════════════════════
-const PIERRE_STORAGE = 'pierre_history_v1';
-let pierreHistory = [];
-let pierreLoading = false;
-let pierreFileData = null; // {base64, mediaType, name, isStl}
+const TERMINAL_STORAGE = 'terminal_history_v1';
+let terminalHistory = [];
+let terminalLoading = false;
+let terminalFileData = null; // {base64, mediaType, name, isStl}
 
-const PIERRE_SYSTEM = `Sen Pierre Fachuard'sın. 25 yıllık deneyimli bir diş teknisyeni ustası ve akademisyensin. Exocad ve 3Shape yazılımlarında uzmansın. Diş morfolojisi, oklüzyon, zirkonyum, PFM, implant üst yapı, tam ark tasarım konularında derin bilgin var. Türkçe konuş. Teknik terimleri doğru kullan. Öğretici, sabırlı ve net ol. Asla "bilmiyorum" deme, her zaman en iyi bilgini paylaş veya yönlendir.`;
+const TERMINAL_SYSTEM = `Sen D·CONSOLE Terminal'sin. Diş teknisyeni eğitimi için geliştirilmiş özel bir CAD analiz motoru. Exocad, 3Shape, zirkonyum, PFM, implant üst yapıları, oklüzyon ve frezleme parametrelerinde üst düzey uzmanlaşmış teknik sistemsin. Yanıtlarını net, teknik ve doğrudan ver. Türkçe konuş, teknik terimleri hem TR hem EN yaz. Asla "bilmiyorum" deme, her zaman en doğru bilgiyi ver veya yönlendir. Sayısal parametre sorusunda kesin değerler belirt.`;
 
-function initPierre() {
-  const saved = localStorage.getItem(PIERRE_STORAGE);
+function initTerminal() {
+  const saved = localStorage.getItem(TERMINAL_STORAGE);
   if (saved) {
-    try { pierreHistory = JSON.parse(saved); } catch(e) { pierreHistory = []; }
+    try { terminalHistory = JSON.parse(saved); } catch(e) { terminalHistory = []; }
   }
-  renderPierreHistory();
+  renderTerminalHistory();
+  if (typeof initTerminalWave === 'function') {
+    initTerminalWave('terminal-wave');
+  }
 }
 
-function renderPierreHistory() {
-  const chat = document.getElementById('pierre-chat');
-  const welcome = document.getElementById('pierre-welcome');
+function renderTerminalHistory() {
+  const chat = document.getElementById('terminal-chat');
+  const welcome = document.getElementById('terminal-welcome');
   if (!chat) return;
-  if (welcome) welcome.style.display = pierreHistory.length ? 'none' : 'flex';
+  if (welcome) welcome.style.display = terminalHistory.length ? 'none' : 'flex';
   Array.from(chat.children).forEach(el => {
-    if (el.id !== 'pierre-welcome') el.remove();
+    if (el.id !== 'terminal-welcome') el.remove();
   });
-  pierreHistory.forEach(msg => {
-    addPierreBubble(msg.content, msg.role === 'user' ? 'user' : 'ai', false);
+  terminalHistory.forEach(msg => {
+    addTerminalBubble(msg.content, msg.role === 'user' ? 'user' : 'ai', false);
   });
   chat.scrollTop = chat.scrollHeight;
 }
 
-function addPierreBubble(text, role, scroll = true) {
-  const chat = document.getElementById('pierre-chat');
-  const welcome = document.getElementById('pierre-welcome');
+function addTerminalBubble(text, role, scroll = true) {
+  const chat = document.getElementById('terminal-chat');
+  const welcome = document.getElementById('terminal-welcome');
   if (welcome) welcome.style.display = 'none';
 
   const wrap = document.createElement('div');
-  wrap.className = 'asistan-msg ' + (role === 'user' ? 'user' : 'ai');
-
-  const avatar = document.createElement('div');
-  avatar.className = 'msg-avatar';
-  avatar.style.cssText = 'display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800';
-  avatar.innerHTML = role === 'user'
-    ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(74,144,217,0.85)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`
-    : `<span style="background:linear-gradient(135deg,#8a6000,#9b6dd0);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800">PF</span>`;
+  wrap.className = 'terminal-msg ' + (role === 'user' ? 'user' : 'ai');
 
   const bubble = document.createElement('div');
-  bubble.className = 'msg-bubble';
-  if (role === 'ai') bubble.innerHTML = formatAsistanText(text);
-  else bubble.textContent = text;
+  bubble.className = 'terminal-bubble ' + role;
 
-  wrap.appendChild(avatar);
+  if (role === 'ai') {
+    bubble.innerHTML = formatTerminalText(text);
+  } else {
+    bubble.textContent = text;
+  }
+
   wrap.appendChild(bubble);
   chat.appendChild(wrap);
   if (scroll) chat.scrollTop = chat.scrollHeight;
   return bubble;
 }
 
-function addPierreTyping() {
-  const chat = document.getElementById('pierre-chat');
-  const id = 'pierre-typing-' + Date.now();
+function addTerminalTyping() {
+  const chat = document.getElementById('terminal-chat');
+  const id = 'terminal-typing-' + Date.now();
   const wrap = document.createElement('div');
   wrap.id = id;
-  wrap.className = 'asistan-msg ai';
-  wrap.innerHTML = `<span style="background:linear-gradient(135deg,#8a6000,#9b6dd0);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800;flex-shrink:0">PF</span><div class="msg-bubble"><div class="asistan-typing-dots"><span></span><span></span><span></span></div></div>`;
+  wrap.className = 'terminal-msg ai';
+  wrap.innerHTML = `<div class="terminal-bubble ai"><div class="asistan-typing-dots"><span></span><span></span><span></span></div></div>`;
   chat.appendChild(wrap);
   chat.scrollTop = chat.scrollHeight;
   return id;
 }
 
-function pierreKeydown(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendPierreMsg(); }
+function formatTerminalText(text) {
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/^#{1,3}\s+(.+)$/gm, '<h3>$1</h3>')
+    .replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>');
 }
 
-function pierreFileSelected(input) {
+function terminalKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendTerminalMsg(); }
+}
+
+function terminalFileSelected(input) {
   if (!input.files?.[0]) return;
   const file = input.files[0];
   const isStl = file.name.toLowerCase().endsWith('.stl');
-  const badge = document.getElementById('pierre-file-badge');
+  const badge = document.getElementById('terminal-file-badge');
 
   if (isStl) {
-    pierreFileData = { name: file.name, isStl: true, base64: null, mediaType: null };
-    if (badge) { badge.textContent = `📦 STL: ${file.name}`; badge.style.display = 'block'; }
+    terminalFileData = { name: file.name, isStl: true, base64: null, mediaType: null };
+    if (badge) { badge.textContent = `STL: ${file.name}`; badge.style.display = 'inline-block'; }
     return;
   }
 
@@ -89,52 +100,54 @@ function pierreFileSelected(input) {
   reader.onload = (e) => {
     const base64 = e.target.result.split(',')[1];
     const mediaType = file.type || 'image/jpeg';
-    pierreFileData = { name: file.name, isStl: false, base64, mediaType };
-    if (badge) { badge.textContent = `🖼 Görsel: ${file.name}`; badge.style.display = 'block'; }
+    terminalFileData = { name: file.name, isStl: false, base64, mediaType };
+    if (badge) { badge.textContent = `IMG: ${file.name}`; badge.style.display = 'inline-block'; }
   };
   reader.readAsDataURL(file);
 }
 
-async function sendPierreMsg() {
-  if (pierreLoading) return;
-  const input = document.getElementById('pierre-input');
+async function sendTerminalMsg() {
+  if (terminalLoading) return;
+  const input = document.getElementById('terminal-input');
   const text = (input?.value || '').trim();
-  const hasFile = pierreFileData !== null;
+  const hasFile = terminalFileData !== null;
   if (!text && !hasFile) return;
 
-  const displayText = text || (pierreFileData?.isStl ? `📦 STL dosyası yüklendi: ${pierreFileData.name}` : `🖼 Görsel yüklendi: ${pierreFileData.name}`);
+  const displayText = text || (terminalFileData?.isStl
+    ? `STL: ${terminalFileData.name}`
+    : `IMG: ${terminalFileData.name}`);
 
   input.value = '';
   if (input.style) input.style.height = 'auto';
-  addPierreBubble(displayText, 'user');
+  addTerminalBubble(displayText, 'user');
 
   let userContent;
-  if (pierreFileData && !pierreFileData.isStl && pierreFileData.base64) {
+  if (terminalFileData && !terminalFileData.isStl && terminalFileData.base64) {
     userContent = [
-      { type: 'image', source: { type: 'base64', media_type: pierreFileData.mediaType, data: pierreFileData.base64 } },
-      { type: 'text', text: text || 'Bu tasarımı değerlendirir misin?' }
+      { type: 'image', source: { type: 'base64', media_type: terminalFileData.mediaType, data: terminalFileData.base64 } },
+      { type: 'text', text: text || 'Bu tasarımı analiz et.' }
     ];
-  } else if (pierreFileData?.isStl) {
+  } else if (terminalFileData?.isStl) {
     userContent = text
-      ? `[STL Dosyası: ${pierreFileData.name}]\n\n${text}`
-      : `STL dosyası yükledim: ${pierreFileData.name}. Bu konuda ne söylersin?`;
+      ? `[STL: ${terminalFileData.name}]\n\n${text}`
+      : `STL dosyası yüklendi: ${terminalFileData.name}. Analiz et.`;
   } else {
     userContent = text;
   }
 
-  pierreHistory.push({ role: 'user', content: userContent });
-  pierreFileData = null;
-  const badge = document.getElementById('pierre-file-badge');
+  terminalHistory.push({ role: 'user', content: userContent });
+  terminalFileData = null;
+  const badge = document.getElementById('terminal-file-badge');
   if (badge) badge.style.display = 'none';
-  const fileInput = document.getElementById('pierre-file');
+  const fileInput = document.getElementById('terminal-file');
   if (fileInput) fileInput.value = '';
 
-  pierreLoading = true;
-  const typingId = addPierreTyping();
+  terminalLoading = true;
+  const typingId = addTerminalTyping();
 
   try {
     const {data:{session}} = await sb.auth.getSession();
-    const messages = pierreHistory.slice(-12).map(m => ({
+    const messages = terminalHistory.slice(-12).map(m => ({
       role: m.role,
       content: typeof m.content === 'string' ? m.content : m.content
     }));
@@ -148,7 +161,7 @@ async function sendPierreMsg() {
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 1500,
-        system: PIERRE_SYSTEM,
+        system: TERMINAL_SYSTEM,
         messages
       })
     });
@@ -157,42 +170,42 @@ async function sendPierreMsg() {
     document.getElementById(typingId)?.remove();
 
     if (data.error) {
-      addPierreBubble('❌ API Hatası: ' + data.error.message, 'ai');
+      addTerminalBubble('HATA: ' + data.error.message, 'ai');
     } else if (data.content?.[0]?.text) {
       const reply = data.content[0].text;
-      addPierreBubble(reply, 'ai');
-      pierreHistory.push({ role: 'assistant', content: reply });
-      const saveHistory = pierreHistory.map(m => ({
+      addTerminalBubble(reply, 'ai');
+      terminalHistory.push({ role: 'assistant', content: reply });
+      const saveHistory = terminalHistory.map(m => ({
         role: m.role,
         content: typeof m.content === 'string' ? m.content : (Array.isArray(m.content) ? m.content.find(c=>c.type==='text')?.text || '[görsel]' : '[veri]')
       }));
-      localStorage.setItem(PIERRE_STORAGE, JSON.stringify(saveHistory.slice(-30)));
+      localStorage.setItem(TERMINAL_STORAGE, JSON.stringify(saveHistory.slice(-30)));
     } else {
-      addPierreBubble('❌ Yanıt alınamadı. Lütfen tekrar deneyin.', 'ai');
+      addTerminalBubble('HATA: Yanıt alınamadı.', 'ai');
     }
 
   } catch(err) {
     document.getElementById(typingId)?.remove();
-    addPierreBubble('❌ Bağlantı hatası: ' + err.message, 'ai');
+    addTerminalBubble('HATA: ' + err.message, 'ai');
   }
 
-  pierreLoading = false;
+  terminalLoading = false;
 }
 
-function clearPierreHistory() {
-  pierreHistory = [];
-  localStorage.removeItem(PIERRE_STORAGE);
-  const chat = document.getElementById('pierre-chat');
+function clearTerminalHistory() {
+  terminalHistory = [];
+  localStorage.removeItem(TERMINAL_STORAGE);
+  const chat = document.getElementById('terminal-chat');
   if (chat) {
-    Array.from(chat.children).forEach(el => { if (el.id !== 'pierre-welcome') el.remove(); });
-    const welcome = document.getElementById('pierre-welcome');
+    Array.from(chat.children).forEach(el => { if (el.id !== 'terminal-welcome') el.remove(); });
+    const welcome = document.getElementById('terminal-welcome');
     if (welcome) welcome.style.display = 'flex';
   }
 }
 
-async function askPierreFromVaka(vakaContext, userNote) {
-  const content = `VAKA BİLGİSİ:\n${vakaContext}\n\nTEKNİSYENİN DEĞERLENDİRMESİ:\n${userNote || '(Değerlendirme yazılmadı)'}\n\nBu vaka için değerlendirmemi inceler misin? Doğru yaklaşım neydi, neyi daha iyi yapabilirdim?`;
-  pierreHistory.push({ role: 'user', content });
+async function askTerminalFromVaka(vakaContext, userNote) {
+  const content = `VAKA BİLGİSİ:\n${vakaContext}\n\nTEKNİSYEN DEĞERLENDİRMESİ:\n${userNote || '(Değerlendirme yazılmadı)'}\n\nBu vakayı analiz et. Doğru yaklaşım neydi, ne iyileştirilebilir?`;
+  terminalHistory.push({ role: 'user', content });
 
   const {data:{session}} = await sb.auth.getSession();
   const res = await fetch(PROXY_URL, {
@@ -201,12 +214,12 @@ async function askPierreFromVaka(vakaContext, userNote) {
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 800,
-      system: PIERRE_SYSTEM,
-      messages: pierreHistory.slice(-6)
+      system: TERMINAL_SYSTEM,
+      messages: terminalHistory.slice(-6)
     })
   });
   const data = await res.json();
   const reply = data.content?.[0]?.text || 'Yanıt alınamadı.';
-  pierreHistory.push({ role: 'assistant', content: reply });
+  terminalHistory.push({ role: 'assistant', content: reply });
   return reply;
 }

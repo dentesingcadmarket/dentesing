@@ -113,20 +113,6 @@ async function loadHataAnaliz() {
   if (btn) { btn.disabled = false; btn.textContent = '🤖 AI Analiz'; }
 }
 
-// ── KARAR SİSTEMİ ──
-async function loadKarar() {
-  if (!currentUser) return;
-  const {data}=await sb.from('karar_sistemi').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
-  const grid=document.getElementById('karar-grid'); grid.innerHTML='';
-  if (!data?.length) { grid.innerHTML='<div style="color:var(--text3);font-size:13px;padding:24px;grid-column:1/-1;text-align:center">Henüz vaka kaydı yok 👆</div>'; return; }
-  data.forEach(r=>{
-    const materyal=r.vaka_turu==='Estetik'?'Yüksek Estetik':'Dayanıklı';
-    const kalinlik=r.vaka_turu==='Estetik'?'İnce-Orta':'Orta-Kalın';
-    const vb=r.vaka_turu==='Estetik'?'blue':'orange';
-    grid.innerHTML+=`<div class="karar-card"><div class="karar-vaka"><span class="badge ${vb}">${r.vaka_turu||'—'}</span></div><div class="karar-materyal">${materyal}</div><div class="karar-kalinlik">Kalınlık: ${kalinlik}</div><div style="display:flex;justify-content:space-between;align-items:center"><span class="badge gray karar-cad">CAD: ${r.cad_ayari||'Default'}</span><button class="delete-btn" onclick="deleteRecord('karar_sistemi','${r.id}','karar')">✕</button></div></div>`;
-  });
-}
-
 // ── GELİŞİM ──
 async function loadGelisim() {
   if (!currentUser) return;
@@ -146,21 +132,14 @@ async function deleteRecord(table,id,page) {
   showToast('🗑 Kayıt silindi.');
   if (page==='gunluk') loadGunluk();
   if (page==='hata') loadHata();
-  if (page==='karar') loadKarar();
   loadDashboard();
 }
 
 // ── APP MODAL ──
 const modals = {
-  gun:{title:'➕ Yeni Gün Başlat',sub:'Bugünkü çalışma bilgilerini gir',body:`<div class="modal-field"><label class="modal-label">İş Türü</label><select class="modal-select" id="m-isturi"><option>Zirkonyum</option><option>PFM</option><option>İmplant</option><option>Veneer</option><option>Diğer</option></select></div><div class="modal-field"><label class="modal-label">Süre (dakika)</label><input class="modal-input" type="number" id="m-sure" placeholder="35" min="0"/></div><div class="modal-field"><label class="modal-label">Hata Sayısı</label><input class="modal-input" type="number" id="m-hatasayisi" placeholder="0" min="0" value="0"/></div><div class="modal-field"><label class="modal-label">Zorluk</label><select class="modal-select" id="m-zorluk"><option>Kolay</option><option>Orta</option><option>Zor</option></select></div><div class="modal-field"><label class="modal-label">Not (maks 250 karakter)</label><input class="modal-input" type="text" id="m-not" placeholder="Bugün başlıyorum" maxlength="250"/></div><div class="modal-field"><label class="modal-label">Görsel veya STL (opsiyonel)</label><input class="modal-input" type="file" id="m-dosya" accept=".png,.jpg,.jpeg,.stl" style="padding:6px"/></div>`},
-  hata:{title:'⚠️ Yeni Hata Ekle',sub:'Hatayı kaydet, sebebini yaz',body:`<div class="modal-field"><label class="modal-label">Hata</label><input class="modal-input" type="text" id="m-hata" placeholder="Ne hata yaptın?"/></div><div class="modal-field"><label class="modal-label">Sebep</label><input class="modal-input" type="text" id="m-sebep" placeholder="Neden oldu?"/></div><div class="modal-field"><label class="modal-label">Çözüm</label><input class="modal-input" type="text" id="m-cozum" placeholder="Bir dahaki sefere ne yaparsın?"/></div><div class="modal-field"><label class="modal-label">Daha önce yaptın mı?</label><select class="modal-select" id="m-tekrar"><option value="false">Hayır</option><option value="true">Evet</option></select></div>`},
-  karar:{title:'🧠 Yeni Vaka',sub:'Vaka türünü seç, sistem hesaplar',body:`<div class="modal-field"><label class="modal-label">Vaka Türü</label><select class="modal-select" id="m-vakaturu" onchange="updateKararPreview()"><option>Estetik</option><option>Fonksiyon</option></select></div><div class="modal-field"><label class="modal-label">Materyal (Otomatik)</label><input class="modal-input" id="m-materyal" readonly style="opacity:.6" value="Yüksek Estetik"/></div><div class="modal-field"><label class="modal-label">Kalınlık (Otomatik)</label><input class="modal-input" id="m-kalinlik" readonly style="opacity:.6" value="İnce-Orta"/></div><div class="modal-field"><label class="modal-label">CAD Ayarı</label><select class="modal-select" id="m-cad"><option>Default</option><option>Manuel</option></select></div>`}
+  gun:{title:'Yeni Gün Başlat',sub:'Bugünkü çalışma bilgilerini gir',body:`<div class="modal-field"><label class="modal-label">İş Türü</label><select class="modal-select" id="m-isturi"><option>Zirkonyum</option><option>PFM</option><option>İmplant</option><option>Veneer</option><option>Diğer</option></select></div><div class="modal-field"><label class="modal-label">Süre (dakika)</label><input class="modal-input" type="number" id="m-sure" placeholder="35" min="0"/></div><div class="modal-field"><label class="modal-label">Hata Sayısı</label><input class="modal-input" type="number" id="m-hatasayisi" placeholder="0" min="0" value="0"/></div><div class="modal-field"><label class="modal-label">Zorluk</label><select class="modal-select" id="m-zorluk"><option>Kolay</option><option>Orta</option><option>Zor</option></select></div><div class="modal-field"><label class="modal-label">Not (maks 250 karakter)</label><input class="modal-input" type="text" id="m-not" placeholder="Bugün başlıyorum" maxlength="250"/></div><div class="modal-field"><label class="modal-label">Görsel veya STL (opsiyonel)</label><input class="modal-input" type="file" id="m-dosya" accept=".png,.jpg,.jpeg,.stl" style="padding:6px"/></div>`},
+  hata:{title:'Yeni Hata Ekle',sub:'Hatayı kaydet, sebebini yaz',body:`<div class="modal-field"><label class="modal-label">Hata</label><input class="modal-input" type="text" id="m-hata" placeholder="Ne hata yaptın?"/></div><div class="modal-field"><label class="modal-label">Sebep</label><input class="modal-input" type="text" id="m-sebep" placeholder="Neden oldu?"/></div><div class="modal-field"><label class="modal-label">Çözüm</label><input class="modal-input" type="text" id="m-cozum" placeholder="Bir dahaki sefere ne yaparsın?"/></div><div class="modal-field"><label class="modal-label">Daha önce yaptın mı?</label><select class="modal-select" id="m-tekrar"><option value="false">Hayır</option><option value="true">Evet</option></select></div>`}
 };
-function updateKararPreview() {
-  const v=document.getElementById('m-vakaturu').value;
-  document.getElementById('m-materyal').value=v==='Estetik'?'Yüksek Estetik':'Dayanıklı';
-  document.getElementById('m-kalinlik').value=v==='Estetik'?'İnce-Orta':'Orta-Kalın';
-}
 function openModal(type) {
   currentModal=type; const m=modals[type];
   document.getElementById('modal-title').textContent=m.title;
@@ -192,9 +171,6 @@ async function submitModal() {
     } else if (currentModal==='hata') {
       await sb.from('hata_gunlugu').insert({user_id:currentUser.id,tarih:today,hata:document.getElementById('m-hata').value,sebep:document.getElementById('m-sebep').value,cozum:document.getElementById('m-cozum').value,tekrarlandi:document.getElementById('m-tekrar').value==='true'});
       showToast('⚠️ Hata günlüğüne eklendi!'); loadHata();
-    } else if (currentModal==='karar') {
-      await sb.from('karar_sistemi').insert({user_id:currentUser.id,vaka_turu:document.getElementById('m-vakaturu').value,cad_ayari:document.getElementById('m-cad').value});
-      showToast('🧠 Vaka sisteme işlendi!'); loadKarar();
     }
     closeModal(); loadDashboard();
   } catch(e) { showToast('❌ Hata: '+e.message); }

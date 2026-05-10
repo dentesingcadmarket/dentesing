@@ -1,6 +1,6 @@
 // ── SAYFA MODÜLLERİ ──
 const PAGE_MODULES = {
-  asistan: 2, pierre: 2, vakalar: 2,
+  terminal: 2, vakalar: 2,
   tasarim: 2, egzersiz: 2, fiyat: 2, musteri: 2
 };
 
@@ -157,10 +157,10 @@ function closeLockOverlay() {
 // ── APP NAVİGASYON ──
 const breadcrumbs = {
   dashboard:'Dashboard', gunluk:'Günlük Takip', hata:'Hata Günlüğü',
-  karar:'Karar Sistemi', tasarim:'Tasarım Takibi', egzersiz:'Hız Egzersizleri',
+  tasarim:'Tasarım Takibi', egzersiz:'Hız Egzersizleri',
   fiyat:'Fiyatlandırma', musteri:'Müşteri Takip', rehber:'Nasıl Kullanılır?',
-  gelisim:'Gelişim Takibi', asistan:'Teknik Asistan', yolharita:'Yol Haritam',
-  pierre:'Pierre Fachuard', vakalar:'Vaka Pratikleri'
+  gelisim:'Gelişim Takibi', yolharita:'Yol Haritam',
+  terminal:'Terminal', vakalar:'Vaka Pratikleri'
 };
 
 function navigate(page, el) {
@@ -176,13 +176,11 @@ function navigate(page, el) {
   if (!pageEl) return;
   pageEl.classList.add('active');
   if (el) el.classList.add('active');
-  document.getElementById('breadcrumb').innerHTML = `🦷 Dentesing CAD Market › <span>${breadcrumbs[page] || page}</span>`;
+  document.getElementById('breadcrumb').innerHTML = `D·CONSOLE › <span>${breadcrumbs[page] || page}</span>`;
   if (page === 'dashboard') loadDashboard();
   if (page === 'gunluk') loadGunluk();
   if (page === 'hata') loadHata();
-  if (page === 'karar') loadKarar();
   if (page === 'gelisim') loadGelisim();
-  if (page === 'asistan') initAsistan();
-  if (page === 'pierre') initPierre();
+  if (page === 'terminal') initTerminal();
   if (page === 'vakalar') loadVakalar();
 }

@@ -69,16 +69,16 @@ async function vakaAskPierre() {
   if (!currentVaka) return;
   const not = document.getElementById('vaka-degerlendirme').value.trim();
   const btn = document.getElementById('vaka-pierre-btn');
-  btn.disabled = true; btn.textContent = '⏳ Pierre analiz ediyor...';
+  btn.disabled = true; btn.textContent = 'Terminal analiz ediyor...';
 
   const vakaCtx = `Başlık: ${currentVaka.baslik}\nHasta Notu: ${currentVaka.hasta_notu||''}\nKlinisyen Talebi: ${currentVaka.klinisyen_notu||''}\nKategori: ${currentVaka.kategori} | Zorluk: ${currentVaka.zorluk}/5`;
 
-  const feedback = await askPierreFromVaka(vakaCtx, not);
+  const feedback = await askTerminalFromVaka(vakaCtx, not);
   const el = document.getElementById('vaka-pierre-feedback');
-  el.innerHTML = '<strong>🦷 Pierre Fachuard:</strong><br>' + feedback.replace(/\n/g,'<br>');
+  el.innerHTML = '<strong>TERMINAL &gt;</strong><br>' + feedback.replace(/\n/g,'<br>');
   el.style.display = 'block';
 
-  btn.disabled = false; btn.textContent = '🦷 Pierre\'e Sor';
+  btn.disabled = false; btn.textContent = 'Terminal\'e Sor';
 }
 
 async function vakaComplete() {
