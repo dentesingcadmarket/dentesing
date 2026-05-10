@@ -14,9 +14,6 @@ function initTerminal() {
     try { terminalHistory = JSON.parse(saved); } catch(e) { terminalHistory = []; }
   }
   renderTerminalHistory();
-  if (typeof initTerminalWave === 'function') {
-    initTerminalWave('terminal-wave');
-  }
 }
 
 function renderTerminalHistory() {

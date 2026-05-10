@@ -487,10 +487,6 @@
     <!-- TERMINAL -->
     <div class="page" id="page-terminal">
       <div class="terminal-wrap">
-        <div id="terminal-wave"></div>
-        <div class="terminal-blob terminal-blob-1"></div>
-        <div class="terminal-blob terminal-blob-2"></div>
-        <div class="terminal-blob terminal-blob-3"></div>
         <div class="terminal-chat-wrap">
           <div class="terminal-header">
             <div class="terminal-title">CAD Analiz Motoru</div>
@@ -522,8 +518,8 @@
               ></textarea>
               <div class="terminal-input-toolbar">
                 <div class="terminal-toolbar-left">
-                  <label class="terminal-tool-btn" title="Görsel veya STL yükle" style="cursor:pointer">
-                    📎
+                  <label class="terminal-tool-btn" title="Görsel veya STL yükle" style="cursor:pointer;font-size:13px">
+                    Dosya
                     <input type="file" id="terminal-file" accept=".png,.jpg,.jpeg,.stl" style="display:none" onchange="terminalFileSelected(this)">
                   </label>
                   <button class="terminal-clear-btn" onclick="clearTerminalHistory()">Temizle</button>
