@@ -75,41 +75,58 @@ body{background:var(--bg);}
 #funnel { display:block; }
 #app-shell { display:none; }
 
-/* NAVBAR */
+/* NAVBAR — Floating Pill */
 .f-nav {
-  position:fixed; top:0; left:0; right:0; z-index:100;
-  height:64px;
-  background:rgba(10,10,15,0.92);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-  display:flex; align-items:center; padding:0 40px; gap:20px;
+  position:fixed; top:18px;
+  left:50%; transform:translateX(-50%);
+  width:auto; max-width:92vw; z-index:100;
+  border-radius:40px;
+  background:rgba(10,10,14,0.85);
+  border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  display:flex; align-items:center;
+  padding:8px 10px 8px 20px; gap:14px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.45);
+  white-space:nowrap;
 }
 .f-nav-logo { display:flex; align-items:center; gap:10px; }
-.f-nav-logo img { height:38px; width:38px; border-radius:50%; object-fit:cover; }
-.f-nav-brand { font-size:15px; font-weight:700; color:var(--text); }
+.f-nav-logo img { height:30px; width:30px; border-radius:50%; object-fit:cover; }
+.f-nav-brand { font-size:14px; font-weight:700; color:var(--text); letter-spacing:-.01em; }
 .f-nav-brand span { color:var(--m1b); }
-.f-nav-spacer { flex:1; }
+.f-nav-spacer { flex:1; min-width:24px; }
 .f-nav-login {
-  padding:8px 20px; border-radius:var(--radius);
-  background:rgba(255,255,255,0.06); border:1px solid var(--border2);
+  padding:7px 18px; border-radius:30px;
+  background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12);
   color:var(--text); font-size:13px; font-weight:600;
   cursor:pointer; font-family:var(--font-sans);
   transition:all .2s;
 }
-.f-nav-login:hover { background:rgba(255,255,255,0.12); }
+.f-nav-login:hover { background:rgba(255,255,255,0.14); }
+.f-nav-signup {
+  padding:8px 20px; border-radius:30px;
+  background:#fff; color:#060609;
+  border:none; font-size:13px; font-weight:700;
+  cursor:pointer; font-family:var(--font-sans);
+  transition:all .2s; flex-shrink:0;
+}
+.f-nav-signup:hover { background:#dde8ff; }
 
 /* HERO */
 .f-hero {
   min-height:100vh; display:flex; flex-direction:column;
   align-items:center; justify-content:center;
-  padding:100px 40px 60px;
+  padding:100px 40px 60px; text-align:center;
   position:relative; overflow:hidden;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(74,144,217,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 30% at 10% 80%, rgba(74,144,217,0.06) 0%, transparent 50%),
-    var(--bg);
-  text-align:center;
+  background-color:#070709;
+  background-image:radial-gradient(circle, rgba(255,255,255,0.14) 1px, transparent 1px);
+  background-size:24px 24px;
 }
+.f-hero::before {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:0;
+  background:radial-gradient(ellipse 65% 55% at 50% 50%, transparent 20%, rgba(7,7,9,0.88) 100%);
+}
+.f-hero-content { position:relative; z-index:1; }
 .f-hero-badge {
   display:inline-flex; align-items:center; gap:6px;
   background:rgba(74,144,217,0.12); border:1px solid rgba(74,144,217,0.3);
@@ -272,13 +289,22 @@ body{background:var(--bg);}
 /* ═══ MODÜL DETAY SAYFASI ═══ */
 #mod-detail {
   display:none; min-height:100vh;
-  background:var(--bg);
+  background-color:#070709;
+  background-image:radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size:24px 24px;
 }
 .md-nav {
-  position:fixed; top:0; left:0; right:0; z-index:100;
-  height:64px; background:rgba(10,10,15,0.92);
-  backdrop-filter:blur(16px); border-bottom:1px solid var(--border);
-  display:flex; align-items:center; padding:0 40px; gap:16px;
+  position:fixed; top:18px;
+  left:50%; transform:translateX(-50%);
+  width:auto; max-width:92vw; z-index:100;
+  border-radius:40px;
+  background:rgba(10,10,14,0.85);
+  border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  box-shadow:0 8px 40px rgba(0,0,0,0.45);
+  white-space:nowrap;
+  display:flex; align-items:center; padding:8px 10px 8px 20px; gap:14px;
 }
 .md-back {
   display:flex; align-items:center; gap:6px;
@@ -623,12 +649,7 @@ body{background:var(--bg);}
 }
 .terminal-send:disabled { cursor:not-allowed; opacity:0.5; }
 
-/* ── Landing 3D Canvas ── */
-#landing-3d-canvas {
-  position:absolute; inset:0; width:100%; height:100%;
-  pointer-events:none; z-index:0;
-}
-.f-hero-content { position:relative; z-index:1; }
+/* Landing canvas kaldırıldı — dot-grid CSS ile değiştirildi */
 
 /* ── Aurora Pricing Cards ── */
 .aurora-cards-grid { position:relative; }
@@ -952,7 +973,9 @@ body{background:var(--bg);}
   .f-footer { padding: 28px 20px; }
 
   /* MOD DETAY */
-  .md-nav { padding: 0 16px; height: 56px; }
+  .md-nav { padding: 7px 8px 7px 16px; top: 12px; }
+  .f-nav { padding: 7px 8px 7px 16px; top: 12px; gap: 10px; }
+  .f-nav-signup { display: none; }
   .md-nav-brand { font-size: 13px; }
   .md-content { padding: 72px 16px 48px; }
   .md-title { font-size: 32px; letter-spacing: -1px; }
