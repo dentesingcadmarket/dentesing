@@ -4,112 +4,74 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>[Portfolio]</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg:       #0D0D0D;
-    --surface:  #141414;
-    --surface2: #1A1A1A;
-    --border:   rgba(255,255,255,0.06);
-    --border2:  rgba(255,255,255,0.10);
-    --text:     #F0F0F0;
-    --text2:    #7A7A7A;
-    --text3:    #444444;
-    --green:    #00E5A0;
-    --gold:     #C8A84B;
-    --red:      #E05252;
-    --blue:     #4B8EE0;
-    --radius:   16px;
-    --font-h:   'Syne', sans-serif;
-    --font-b:   'DM Sans', sans-serif;
-  }
-
-  html, body {
-    height: 100%;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-b);
-    font-size: 14px;
+  body {
+    background: #0D0D0D;
+    font-family: 'DM Sans', sans-serif;
+    color: #F0F0F0;
+    height: 100vh;
+    overflow: hidden;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ── APP SHELL ── */
-  .app {
-    display: flex;
+  .dash-root {
+    display: grid;
+    grid-template-columns: 64px 1fr 340px;
     height: 100vh;
-    background: var(--bg);
+    background: #0D0D0D;
     overflow: hidden;
   }
 
-  /* ── SIDEBAR ── */
+  /* ═══════════════ SIDEBAR ═══════════════ */
   .sidebar {
-    width: 64px;
-    flex-shrink: 0;
-    background: #111111;
-    border-right: 1px solid var(--border);
+    background: #0D0D0D;
+    border-right: 1px solid rgba(255,255,255,0.05);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 0;
+    padding: 22px 0 18px;
     gap: 6px;
-    position: relative;
-    z-index: 10;
   }
 
   .sidebar-logo {
-    width: 36px;
-    height: 36px;
+    width: 36px; height: 36px;
     border-radius: 10px;
-    background: linear-gradient(135deg, var(--green) 0%, #009966 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
+    background: linear-gradient(135deg, #00E5A0, #009966);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 18px;
     flex-shrink: 0;
   }
 
-  .sidebar-logo svg { width: 18px; height: 18px; }
+  .sidebar-logo i { font-size: 17px; color: #0D0D0D; }
 
-  .nav-spacer { flex: 1; }
-
-  .nav-btn {
-    width: 40px;
-    height: 40px;
+  .sidebar-icon {
+    width: 40px; height: 40px;
     border-radius: 12px;
-    background: transparent;
-    border: none;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.30);
+    font-size: 19px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text2);
-    transition: background 0.15s, color 0.15s;
-    position: relative;
+    transition: all 0.18s;
+    border: none; background: transparent;
   }
 
-  .nav-btn:hover {
-    background: rgba(255,255,255,0.06);
-    color: var(--text);
-  }
+  .sidebar-icon:hover { color: #fff; background: rgba(255,255,255,0.07); }
+  .sidebar-icon.active { background: rgba(255,255,255,0.09); color: #fff; }
 
-  .nav-btn.active {
-    background: rgba(255,255,255,0.08);
-    color: var(--text);
-  }
+  .sidebar-spacer { flex: 1; }
 
-  .nav-btn svg { width: 20px; height: 20px; stroke-width: 1.8; }
-
-  /* ── CONTENT AREA ── */
-  .content {
-    flex: 1;
+  /* ═══════════════ CONTENT COL ═══════════════ */
+  .content-col {
     display: flex;
     flex-direction: column;
-    min-width: 0;
     overflow: hidden;
+    background: #0D0D0D;
+    padding: 16px 12px 16px 16px;
+    gap: 14px;
   }
 
   /* ── TOP BAR ── */
@@ -117,959 +79,657 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 24px 18px 20px;
-    border-bottom: 1px solid var(--border);
     flex-shrink: 0;
   }
 
   .topbar-title {
-    font-family: var(--font-h);
-    font-size: 22px;
+    font-size: 21px;
     font-weight: 700;
-    color: var(--text);
+    color: #fff;
     letter-spacing: -0.3px;
   }
 
-  .topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .topbar-actions {
+    display: flex; align-items: center; gap: 9px;
   }
 
-  .icon-btn {
-    width: 36px;
-    height: 36px;
+  .topbar-btn {
+    width: 34px; height: 34px;
     border-radius: 50%;
-    border: 1px solid var(--border2);
-    background: var(--surface);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: 1px solid rgba(255,255,255,0.11);
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.65);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 16px;
+    position: relative;
+    transition: background 0.15s;
+  }
+
+  .topbar-btn:hover { background: rgba(255,255,255,0.10); color: #fff; }
+
+  .notif-dot {
+    position: absolute; top: 7px; right: 7px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #E05252;
+    border: 1.5px solid #0D0D0D;
+  }
+
+  .avatar-pill {
+    display: flex; align-items: center; gap: 8px;
+    padding: 4px 13px 4px 4px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 999px;
     cursor: pointer;
-    color: var(--text2);
-    transition: background 0.15s, color 0.15s;
-    font-size: 14px;
-    font-weight: 600;
+    transition: background 0.15s;
   }
 
-  .icon-btn:hover { background: var(--surface2); color: var(--text); }
-  .icon-btn svg { width: 16px; height: 16px; stroke-width: 1.8; }
+  .avatar-pill:hover { background: rgba(255,255,255,0.09); }
 
-  .topbar-divider {
-    width: 1px;
-    height: 28px;
-    background: var(--border2);
-    margin: 0 4px;
+  .avatar-circle {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(135deg, #00E5A0, #00b07a);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #0D0D0D;
   }
 
-  .user-chip {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    cursor: pointer;
-  }
-
-  .user-avatar {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #C8A84B 0%, #8a6000 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-h);
-    font-weight: 700;
-    font-size: 13px;
-    color: #fff;
-    flex-shrink: 0;
-  }
-
-  .user-name {
-    font-family: var(--font-b);
-    font-weight: 600;
-    font-size: 13.5px;
-    color: var(--text);
-  }
-
-  /* ── PANELS ROW ── */
-  .panels {
-    flex: 1;
-    display: flex;
-    overflow: hidden;
-    padding: 16px 16px 16px 16px;
-    gap: 12px;
-  }
+  .avatar-name { font-size: 12px; color: rgba(255,255,255,0.65); font-weight: 500; }
 
   /* ── MAIN PANEL ── */
-  .main-panel {
+  .panel {
+    background: #141414;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.05);
     flex: 1;
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    padding: 20px;
   }
 
-  .main-inner {
-    padding: 22px 24px;
-    overflow-y: auto;
-    flex: 1;
-  }
-
-  .main-inner::-webkit-scrollbar { width: 4px; }
-  .main-inner::-webkit-scrollbar-track { background: transparent; }
-  .main-inner::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 999px; }
-
-  /* Panel header */
   .panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+    flex-shrink: 0;
   }
 
-  .panel-title {
-    font-family: var(--font-h);
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text);
-  }
+  .panel-title { font-size: 15px; font-weight: 700; color: #fff; }
 
   .panel-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: var(--text2);
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: rgba(255,255,255,0.35);
   }
 
-  .panel-meta-sep {
-    width: 1px;
-    height: 14px;
-    background: var(--border2);
-  }
+  .panel-meta-sep { color: rgba(255,255,255,0.15); }
 
   /* Search row */
   .search-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 22px;
+    display: flex; gap: 10px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
   }
 
-  .search-wrap {
-    flex: 1;
-    position: relative;
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text2);
-    pointer-events: none;
-  }
-
-  .search-icon svg { width: 15px; height: 15px; stroke-width: 2; }
-
-  .search-input {
-    width: 100%;
-    height: 40px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
+  .search-box {
+    flex: 1; height: 38px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.07);
     border-radius: 999px;
-    padding: 0 16px 0 40px;
-    font-family: var(--font-b);
-    font-size: 13px;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.15s;
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 16px;
+    color: rgba(255,255,255,0.22);
+    font-size: 13px; font-family: 'DM Sans', sans-serif;
+    cursor: text;
   }
 
-  .search-input::placeholder { color: var(--text3); }
-  .search-input:focus { border-color: var(--border2); }
+  .search-box i { font-size: 14px; }
 
   .filter-btn {
-    height: 40px;
-    padding: 0 16px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
+    height: 38px; padding: 0 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.07);
     border-radius: 999px;
-    font-family: var(--font-b);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text2);
+    display: flex; align-items: center; gap: 7px;
+    color: rgba(255,255,255,0.40);
+    font-size: 13px; font-family: 'DM Sans', sans-serif;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 7px;
     transition: background 0.15s, color 0.15s;
     white-space: nowrap;
   }
 
-  .filter-btn:hover { background: #222222; color: var(--text); }
-  .filter-btn svg { width: 14px; height: 14px; stroke-width: 1.8; }
+  .filter-btn:hover { background: rgba(255,255,255,0.09); color: #fff; }
+  .filter-btn i { font-size: 14px; }
 
   /* Section label */
   .section-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-h);
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 16px;
-  }
-
-  .section-label-chevron {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.50);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 6px;
     cursor: pointer;
+    flex-shrink: 0;
   }
 
-  .section-label-chevron svg { width: 11px; height: 11px; stroke-width: 2.5; color: var(--text2); }
+  .section-label i { font-size: 13px; }
 
   /* ── CARDS GRID ── */
   .cards-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    gap: 12px;
+    overflow: hidden;
+    flex: 1;
   }
 
   /* ── PROJECT CARD ── */
-  .card {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px;
-    position: relative;
-    overflow: hidden;
+  .project-card {
+    border-radius: 16px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    min-height: 190px;
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    top: -35px;
-    right: -35px;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    opacity: 0.30;
-    filter: blur(28px);
-    pointer-events: none;
-  }
-
-  .card--green::before { background: #00E5A0; }
-  .card--gold::before  { background: #C8A84B; }
-  .card--red::before   { background: #E05252; }
-  .card--blue::before  { background: #4B8EE0; }
-
-  /* card inner glow ring (top-right corner accent) */
-  .card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 90px;
-    height: 90px;
-    border-radius: 0 var(--radius) 0 100%;
-    opacity: 0.12;
-    pointer-events: none;
-  }
-
-  .card--green::after { background: linear-gradient(225deg, #00E5A0, transparent); }
-  .card--gold::after  { background: linear-gradient(225deg, #C8A84B, transparent); }
-  .card--red::after   { background: linear-gradient(225deg, #E05252, transparent); }
-  .card--blue::after  { background: linear-gradient(225deg, #4B8EE0, transparent); }
-
-  .card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    gap: 9px;
+    cursor: pointer;
     position: relative;
-    z-index: 1;
+    overflow: hidden;
+    transition: transform 0.2s ease, filter 0.2s ease;
   }
 
-  .card-date {
-    font-size: 11.5px;
-    color: var(--text2);
-    font-weight: 400;
+  .project-card:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.10);
   }
+
+  /* Colored glow blob — top-right corner */
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 170px; height: 170px;
+    border-radius: 50%;
+    filter: blur(42px);
+    opacity: 0.42;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* All direct children above the blob */
+  .project-card > * { position: relative; z-index: 1; }
+
+  /* Card variants */
+  .card-1 {
+    background: linear-gradient(145deg, #141414 58%, #162213);
+    border: 1px solid rgba(0,229,160,0.12);
+  }
+  .card-1::before { background: #00E5A0; }
+
+  .card-2 {
+    background: linear-gradient(145deg, #141414 58%, #211c0d);
+    border: 1px solid rgba(200,168,75,0.12);
+  }
+  .card-2::before { background: #C8A84B; }
+
+  .card-3 {
+    background: linear-gradient(145deg, #141414 58%, #1f0f0f);
+    border: 1px solid rgba(224,82,82,0.12);
+  }
+  .card-3::before { background: #E05252; }
+
+  .card-4 {
+    background: linear-gradient(145deg, #141414 58%, #0e1620);
+    border: 1px solid rgba(75,142,224,0.12);
+  }
+  .card-4::before { background: #4B8EE0; }
+
+  /* Card rows */
+  .card-toprow {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .card-date { font-size: 10.5px; color: rgba(255,255,255,0.28); }
 
   .card-menu {
-    width: 24px;
-    height: 24px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--text2);
-    font-size: 18px;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    transition: background 0.15s;
-    letter-spacing: 1px;
+    font-size: 15px; color: rgba(255,255,255,0.22);
+    cursor: pointer; background: none; border: none;
+    line-height: 1; display: flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 6px;
+    transition: background 0.12s, color 0.12s;
   }
 
-  .card-menu:hover { background: rgba(255,255,255,0.06); color: var(--text); }
-
-  .card-body { position: relative; z-index: 1; flex: 1; }
+  .card-menu:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.6); }
 
   .card-title {
-    font-family: var(--font-h);
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 3px;
-    line-height: 1.3;
+    font-size: 15px; font-weight: 700; color: #fff;
+    line-height: 1.25;
   }
 
-  .card-subtitle {
-    font-size: 12px;
-    color: var(--text2);
-    font-weight: 400;
+  .card-sub { font-size: 11px; color: rgba(255,255,255,0.32); margin-top: 1px; }
+
+  /* Progress */
+  .progress-label { font-size: 10.5px; color: rgba(255,255,255,0.32); margin-bottom: 5px; }
+
+  .progress-bar {
+    width: 100%; height: 5px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px;
+    overflow: hidden;
   }
 
-  .card-progress { position: relative; z-index: 1; }
-
-  .progress-label-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 7px;
-  }
-
-  .progress-label {
-    font-size: 11.5px;
-    color: var(--text2);
-    font-weight: 500;
-  }
+  .progress-fill { height: 100%; border-radius: 999px; }
 
   .progress-pct {
-    font-size: 11.5px;
-    font-weight: 600;
-    color: var(--text);
+    font-size: 10.5px; color: rgba(255,255,255,0.28);
+    text-align: right; margin-top: 4px;
   }
 
-  .progress-track {
-    height: 5px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.08);
-    overflow: hidden;
+  /* Card bottom */
+  .card-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: auto;
   }
 
-  .progress-fill {
-    height: 5px;
-    border-radius: 999px;
-    transition: width 0.4s ease;
+  .avatar-stack { display: flex; align-items: center; }
+
+  .av-sm {
+    width: 23px; height: 23px; border-radius: 50%;
+    border: 2px solid #141414;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8.5px; font-weight: 700; color: #0D0D0D;
+    margin-left: -6px;
   }
 
-  .card--green .progress-fill { background: var(--green); }
-  .card--gold  .progress-fill { background: var(--gold); }
-  .card--red   .progress-fill { background: var(--red); }
-  .card--blue  .progress-fill { background: var(--blue); }
+  .avatar-stack .av-sm:first-child { margin-left: 0; }
 
-  .card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    z-index: 1;
-  }
-
-  .avatars {
-    display: flex;
-    align-items: center;
-  }
-
-  .av {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    border: 2px solid var(--surface2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 700;
-    font-family: var(--font-h);
-    color: #fff;
-    margin-left: -7px;
-  }
-
-  .avatars .av:first-child { margin-left: 0; }
-
-  .av--add {
-    background: rgba(255,255,255,0.08);
-    color: var(--text2);
-    font-size: 14px;
+  .av-plus {
+    width: 23px; height: 23px; border-radius: 50%;
+    border: 2px solid #141414;
+    background: rgba(255,255,255,0.10);
+    font-size: 12px; color: rgba(255,255,255,0.40);
+    display: flex; align-items: center; justify-content: center;
+    margin-left: -6px;
     font-weight: 400;
     cursor: pointer;
+    transition: background 0.12s;
   }
 
-  .av--add:hover { background: rgba(255,255,255,0.14); }
+  .av-plus:hover { background: rgba(255,255,255,0.18); }
 
-  .deadline-badge {
-    background: rgba(255,255,255,0.06);
+  .deadline-chip {
+    padding: 4px 11px;
     border-radius: 999px;
-    padding: 4px 12px;
-    font-size: 11.5px;
-    color: var(--text2);
+    background: rgba(255,255,255,0.07);
+    font-size: 10.5px; color: rgba(255,255,255,0.40);
     font-weight: 500;
-    white-space: nowrap;
   }
 
-  /* ── RIGHT PANEL ── */
+  /* ═══════════════ RIGHT PANEL ═══════════════ */
   .right-panel {
-    width: 340px;
-    flex-shrink: 0;
+    background: #101010;
+    border-left: 1px solid rgba(255,255,255,0.05);
     display: flex;
     flex-direction: column;
     overflow: hidden;
   }
 
-  .right-inner {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    height: 100%;
-  }
-
-  .right-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 20px 16px;
+  .rp-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
     flex-shrink: 0;
-    border-bottom: 1px solid var(--border);
   }
 
-  .right-title {
-    font-family: var(--font-h);
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
+  .rp-title { font-size: 15px; font-weight: 700; color: #fff; }
+
+  .rp-icons {
+    display: flex; gap: 4px;
   }
 
-  .right-actions {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .right-icon-btn {
-    width: 30px;
-    height: 30px;
+  .rp-icon-btn {
+    width: 30px; height: 30px;
     border-radius: 8px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--text2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.15s;
+    background: transparent; border: none;
+    color: rgba(255,255,255,0.28);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; cursor: pointer;
+    transition: background 0.12s, color 0.12s;
   }
 
-  .right-icon-btn:hover { background: rgba(255,255,255,0.05); color: var(--text); }
-  .right-icon-btn svg { width: 15px; height: 15px; stroke-width: 1.8; }
+  .rp-icon-btn:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.7); }
 
-  /* ── MESSAGE LIST ── */
+  /* Message list */
   .msg-list {
     flex: 1;
     overflow-y: auto;
-    padding: 8px 10px;
   }
 
-  .msg-list::-webkit-scrollbar { width: 4px; }
+  .msg-list::-webkit-scrollbar { width: 3px; }
   .msg-list::-webkit-scrollbar-track { background: transparent; }
-  .msg-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 999px; }
+  .msg-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 999px; }
 
-  .msg-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 10px;
-    border-radius: 12px;
-    transition: background 0.15s;
-    position: relative;
+  .msg-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 20px;
     cursor: pointer;
+    transition: background 0.15s;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
   }
 
-  .msg-item:hover:not(.starred) { background: rgba(255,255,255,0.03); }
+  .msg-row:hover:not(.active) { background: rgba(255,255,255,0.02); }
 
-  .msg-item.starred {
-    background: rgba(0, 229, 160, 0.07);
-    border: 1px solid rgba(0, 229, 160, 0.10);
+  .msg-row.active {
+    background: linear-gradient(135deg, rgba(0,229,160,0.08), rgba(0,176,122,0.03));
   }
 
-  .msg-divider {
-    height: 1px;
-    background: var(--border);
-    margin: 0 10px;
-  }
-
-  .msg-avatar {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-h);
-    font-weight: 700;
-    font-size: 13px;
-    color: #fff;
+  .msg-av {
+    width: 40px; height: 40px; border-radius: 50%;
     flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #0D0D0D;
   }
 
-  .msg-body { flex: 1; min-width: 0; }
+  .msg-content { flex: 1; min-width: 0; }
 
-  .msg-row1 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .msg-nameline {
+    display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 3px;
   }
 
-  .msg-name {
-    font-family: var(--font-b);
-    font-weight: 600;
-    font-size: 13.5px;
-    color: var(--text);
-  }
+  .msg-name { font-size: 13px; font-weight: 600; color: #F0F0F0; }
 
   .msg-star {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--text3);
-    font-size: 16px;
-    line-height: 1;
-    padding: 0;
-    transition: color 0.15s;
+    font-size: 15px; color: rgba(255,255,255,0.18);
+    background: none; border: none; cursor: pointer;
+    line-height: 1; padding: 0;
+    transition: color 0.12s;
   }
 
-  .msg-item.starred .msg-star { color: var(--green); }
-  .msg-star:hover { color: var(--text2); }
-  .msg-item.starred .msg-star:hover { color: var(--green); }
+  .msg-star:hover { color: rgba(255,255,255,0.5); }
+  .msg-row.active .msg-star { color: #C8A84B; }
 
   .msg-preview {
-    font-size: 12.5px;
-    color: var(--text2);
+    font-size: 11.5px; color: rgba(255,255,255,0.33);
     line-height: 1.45;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     margin-bottom: 4px;
   }
 
-  .msg-date {
-    font-size: 11px;
-    color: var(--text3);
-  }
-
-  /* ── AVATAR COLORS ── */
-  .av-teal   { background: linear-gradient(135deg, #00c97d, #009966); }
-  .av-gold   { background: linear-gradient(135deg, #C8A84B, #8a6000); }
-  .av-red    { background: linear-gradient(135deg, #E05252, #9a2020); }
-  .av-blue   { background: linear-gradient(135deg, #4B8EE0, #1a4fa0); }
-  .av-purple { background: linear-gradient(135deg, #9b6dd0, #4a1a7a); }
-  .av-coral  { background: linear-gradient(135deg, #e0845a, #a04020); }
-
-  /* notification dot */
-  .notif-dot {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--red);
-    border: 1.5px solid #111111;
-  }
+  .msg-date { font-size: 10px; color: rgba(255,255,255,0.18); }
 </style>
 </head>
 <body>
 
-<div class="app">
+<div class="dash-root">
 
-  <!-- ══════════════ SIDEBAR ══════════════ -->
+  <!-- ═══════════ SIDEBAR ═══════════ -->
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-        <polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
+      <i class="ti ti-briefcase"></i>
     </div>
 
-    <button class="nav-btn active" title="Dashboard">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="3" width="7" height="7" rx="1"/>
-        <rect x="14" y="3" width="7" height="7" rx="1"/>
-        <rect x="3" y="14" width="7" height="7" rx="1"/>
-        <rect x="14" y="14" width="7" height="7" rx="1"/>
-      </svg>
+    <button class="sidebar-icon active" title="Dashboard">
+      <i class="ti ti-layout-dashboard"></i>
+    </button>
+    <button class="sidebar-icon" title="Profile">
+      <i class="ti ti-user"></i>
+    </button>
+    <button class="sidebar-icon" title="Messages">
+      <i class="ti ti-message-circle"></i>
+    </button>
+    <button class="sidebar-icon" title="Calendar">
+      <i class="ti ti-calendar"></i>
+    </button>
+    <button class="sidebar-icon" title="History">
+      <i class="ti ti-clock"></i>
     </button>
 
-    <button class="nav-btn" title="Profile">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
-      </svg>
-    </button>
+    <div class="sidebar-spacer"></div>
 
-    <button class="nav-btn" title="Messages">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-      </svg>
-    </button>
-
-    <button class="nav-btn" title="Calendar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="4" width="18" height="18" rx="2"/>
-        <line x1="16" y1="2" x2="16" y2="6"/>
-        <line x1="8" y1="2" x2="8" y2="6"/>
-        <line x1="3" y1="10" x2="21" y2="10"/>
-      </svg>
-    </button>
-
-    <button class="nav-btn" title="History">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <polyline points="12 6 12 12 16 14"/>
-      </svg>
-    </button>
-
-    <div class="nav-spacer"></div>
-
-    <button class="nav-btn" title="Settings" style="position:relative">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"/>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
-        <path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>
-      </svg>
+    <button class="sidebar-icon" title="Settings">
+      <i class="ti ti-settings"></i>
     </button>
   </aside>
 
-  <!-- ══════════════ CONTENT ══════════════ -->
-  <div class="content">
+  <!-- ═══════════ MAIN CONTENT ═══════════ -->
+  <div class="content-col">
 
-    <!-- TOP BAR -->
-    <header class="topbar">
-      <span class="topbar-title">[Portfolio]</span>
-      <div class="topbar-right">
-        <button class="icon-btn" title="Add">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"/>
-            <line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="topbar-title">[Portfolio]</div>
+      <div class="topbar-actions">
+        <button class="topbar-btn" title="Add">
+          <i class="ti ti-plus"></i>
         </button>
-        <button class="icon-btn" title="Notifications" style="position:relative">
+        <button class="topbar-btn" title="Notifications">
           <div class="notif-dot"></div>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-          </svg>
+          <i class="ti ti-bell"></i>
         </button>
-        <div class="topbar-divider"></div>
-        <div class="user-chip">
-          <div class="user-avatar">[U]</div>
-          <span class="user-name">[name]</span>
+        <div class="avatar-pill">
+          <div class="avatar-circle">[U]</div>
+          <span class="avatar-name">[name]</span>
         </div>
       </div>
-    </header>
+    </div>
 
-    <!-- PANELS -->
-    <div class="panels">
+    <!-- Panel -->
+    <div class="panel">
+      <!-- Panel header -->
+      <div class="panel-header">
+        <span class="panel-title">[My Projects]</span>
+        <div class="panel-meta">
+          <span>[Pending]</span>
+          <span class="panel-meta-sep">|</span>
+          <span>[Month, Year]</span>
+        </div>
+      </div>
 
-      <!-- ── MAIN PANEL ── -->
-      <main class="main-panel">
-        <div class="main-inner">
+      <!-- Search row -->
+      <div class="search-row">
+        <div class="search-box">
+          <i class="ti ti-search"></i>
+          [Search...]
+        </div>
+        <button class="filter-btn">
+          [Filter] <i class="ti ti-adjustments-horizontal"></i>
+        </button>
+      </div>
 
-          <!-- Panel header -->
-          <div class="panel-header">
-            <span class="panel-title">[My Projects]</span>
-            <div class="panel-meta">
-              <span>[Pending]</span>
-              <div class="panel-meta-sep"></div>
-              <span>[Month, Year]</span>
-            </div>
+      <!-- Section label -->
+      <div class="section-label">
+        [Ongoing Projects] <i class="ti ti-chevron-down"></i>
+      </div>
+
+      <!-- Cards -->
+      <div class="cards-grid">
+
+        <!-- Card 1 — Green -->
+        <div class="project-card card-1">
+          <div class="card-toprow">
+            <span class="card-date">[date]</span>
+            <button class="card-menu"><i class="ti ti-dots-vertical"></i></button>
           </div>
-
-          <!-- Search row -->
-          <div class="search-row">
-            <div class="search-wrap">
-              <span class="search-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="11" cy="11" r="8"/>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                </svg>
-              </span>
-              <input class="search-input" type="text" placeholder="[Search...]">
-            </div>
-            <button class="filter-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
-              </svg>
-              [Filter]
-            </button>
+          <div>
+            <div class="card-title">[project_title]</div>
+            <div class="card-sub">[subtitle]</div>
           </div>
-
-          <!-- Section label -->
-          <div class="section-label">
-            [Ongoing Projects]
-            <span class="section-label-chevron">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"/>
-              </svg>
-            </span>
+          <div>
+            <div class="progress-label">[Progress]</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width:90%; background:#00E5A0;"></div>
+            </div>
+            <div class="progress-pct">90%</div>
           </div>
-
-          <!-- Cards grid -->
-          <div class="cards-grid">
-
-            <!-- Card 1 — Green -->
-            <div class="card card--green">
-              <div class="card-top">
-                <span class="card-date">[date]</span>
-                <button class="card-menu">&#8942;</button>
-              </div>
-              <div class="card-body">
-                <div class="card-title">[project_title]</div>
-                <div class="card-subtitle">[subtitle]</div>
-              </div>
-              <div class="card-progress">
-                <div class="progress-label-row">
-                  <span class="progress-label">[Progress]</span>
-                  <span class="progress-pct">90%</span>
-                </div>
-                <div class="progress-track">
-                  <div class="progress-fill" style="width:90%"></div>
-                </div>
-              </div>
-              <div class="card-footer">
-                <div class="avatars">
-                  <div class="av av-teal">[A]</div>
-                  <div class="av av-gold">[B]</div>
-                  <div class="av av--add">+</div>
-                </div>
-                <span class="deadline-badge">[X days Left]</span>
-              </div>
+          <div class="card-bottom">
+            <div class="avatar-stack">
+              <div class="av-sm" style="background:#00E5A0;">[A]</div>
+              <div class="av-sm" style="background:#C8A84B;">[B]</div>
+              <div class="av-plus">+</div>
             </div>
-
-            <!-- Card 2 — Gold -->
-            <div class="card card--gold">
-              <div class="card-top">
-                <span class="card-date">[date]</span>
-                <button class="card-menu">&#8942;</button>
-              </div>
-              <div class="card-body">
-                <div class="card-title">[project_title]</div>
-                <div class="card-subtitle">[subtitle]</div>
-              </div>
-              <div class="card-progress">
-                <div class="progress-label-row">
-                  <span class="progress-label">[Progress]</span>
-                  <span class="progress-pct">30%</span>
-                </div>
-                <div class="progress-track">
-                  <div class="progress-fill" style="width:30%"></div>
-                </div>
-              </div>
-              <div class="card-footer">
-                <div class="avatars">
-                  <div class="av av-purple">[C]</div>
-                  <div class="av av-coral">[D]</div>
-                  <div class="av av--add">+</div>
-                </div>
-                <span class="deadline-badge">[X weeks left]</span>
-              </div>
-            </div>
-
-            <!-- Card 3 — Red -->
-            <div class="card card--red">
-              <div class="card-top">
-                <span class="card-date">[date]</span>
-                <button class="card-menu">&#8942;</button>
-              </div>
-              <div class="card-body">
-                <div class="card-title">[project_title]</div>
-                <div class="card-subtitle">[subtitle]</div>
-              </div>
-              <div class="card-progress">
-                <div class="progress-label-row">
-                  <span class="progress-label">[Progress]</span>
-                  <span class="progress-pct">50%</span>
-                </div>
-                <div class="progress-track">
-                  <div class="progress-fill" style="width:50%"></div>
-                </div>
-              </div>
-              <div class="card-footer">
-                <div class="avatars">
-                  <div class="av av-teal">[E]</div>
-                  <div class="av av-red">[F]</div>
-                  <div class="av av--add">+</div>
-                </div>
-                <span class="deadline-badge">[X weeks left]</span>
-              </div>
-            </div>
-
-            <!-- Card 4 — Blue -->
-            <div class="card card--blue">
-              <div class="card-top">
-                <span class="card-date">[date]</span>
-                <button class="card-menu">&#8942;</button>
-              </div>
-              <div class="card-body">
-                <div class="card-title">[project_title]</div>
-                <div class="card-subtitle">[subtitle]</div>
-              </div>
-              <div class="card-progress">
-                <div class="progress-label-row">
-                  <span class="progress-label">[Progress]</span>
-                  <span class="progress-pct">20%</span>
-                </div>
-                <div class="progress-track">
-                  <div class="progress-fill" style="width:20%"></div>
-                </div>
-              </div>
-              <div class="card-footer">
-                <div class="avatars">
-                  <div class="av av-blue">[G]</div>
-                  <div class="av av-gold">[H]</div>
-                  <div class="av av--add">+</div>
-                </div>
-                <span class="deadline-badge">[X weeks left]</span>
-              </div>
-            </div>
-
-          </div><!-- /cards-grid -->
-        </div><!-- /main-inner -->
-      </main><!-- /main-panel -->
-
-      <!-- ── RIGHT PANEL ── -->
-      <aside class="right-panel">
-        <div class="right-inner">
-          <div class="right-header">
-            <span class="right-title">[Client Messages]</span>
-            <div class="right-actions">
-              <button class="right-icon-btn" title="Search">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="11" cy="11" r="8"/>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                </svg>
-              </button>
-              <button class="right-icon-btn" title="More">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="5" r="1" fill="currentColor"/>
-                  <circle cx="12" cy="12" r="1" fill="currentColor"/>
-                  <circle cx="12" cy="19" r="1" fill="currentColor"/>
-                </svg>
-              </button>
-            </div>
+            <span class="deadline-chip">[X days Left]</span>
           </div>
+        </div>
 
-          <div class="msg-list">
-
-            <!-- Message 1 -->
-            <div class="msg-item">
-              <div class="msg-avatar av-blue">[D]</div>
-              <div class="msg-body">
-                <div class="msg-row1">
-                  <span class="msg-name">[name]</span>
-                  <button class="msg-star">&#9734;</button>
-                </div>
-                <div class="msg-preview">[message preview text here]</div>
-                <div class="msg-date">[date]</div>
-              </div>
+        <!-- Card 2 — Gold -->
+        <div class="project-card card-2">
+          <div class="card-toprow">
+            <span class="card-date">[date]</span>
+            <button class="card-menu"><i class="ti ti-dots-vertical"></i></button>
+          </div>
+          <div>
+            <div class="card-title">[project_title]</div>
+            <div class="card-sub">[subtitle]</div>
+          </div>
+          <div>
+            <div class="progress-label">[Progress]</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width:30%; background:#C8A84B;"></div>
             </div>
-
-            <div class="msg-divider"></div>
-
-            <!-- Message 2 — STARRED -->
-            <div class="msg-item starred">
-              <div class="msg-avatar av-teal">[S]</div>
-              <div class="msg-body">
-                <div class="msg-row1">
-                  <span class="msg-name">[name]</span>
-                  <button class="msg-star">&#9733;</button>
-                </div>
-                <div class="msg-preview">[message preview text here]</div>
-                <div class="msg-date">[date]</div>
-              </div>
+            <div class="progress-pct">30%</div>
+          </div>
+          <div class="card-bottom">
+            <div class="avatar-stack">
+              <div class="av-sm" style="background:#E05252;">[C]</div>
+              <div class="av-sm" style="background:#4B8EE0;">[D]</div>
             </div>
+            <span class="deadline-chip">[X weeks left]</span>
+          </div>
+        </div>
 
-            <div class="msg-divider"></div>
-
-            <!-- Message 3 -->
-            <div class="msg-item">
-              <div class="msg-avatar av-red">[W]</div>
-              <div class="msg-body">
-                <div class="msg-row1">
-                  <span class="msg-name">[name]</span>
-                  <button class="msg-star">&#9734;</button>
-                </div>
-                <div class="msg-preview">[message preview text here]</div>
-                <div class="msg-date">[date]</div>
-              </div>
+        <!-- Card 3 — Red -->
+        <div class="project-card card-3">
+          <div class="card-toprow">
+            <span class="card-date">[date]</span>
+            <button class="card-menu"><i class="ti ti-dots-vertical"></i></button>
+          </div>
+          <div>
+            <div class="card-title">[project_title]</div>
+            <div class="card-sub">[subtitle]</div>
+          </div>
+          <div>
+            <div class="progress-label">[Progress]</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width:50%; background:#E05252;"></div>
             </div>
-
-            <div class="msg-divider"></div>
-
-            <!-- Message 4 -->
-            <div class="msg-item">
-              <div class="msg-avatar av-purple">[A]</div>
-              <div class="msg-body">
-                <div class="msg-row1">
-                  <span class="msg-name">[name]</span>
-                  <button class="msg-star">&#9734;</button>
-                </div>
-                <div class="msg-preview">[message preview text here]</div>
-                <div class="msg-date">[date]</div>
-              </div>
+            <div class="progress-pct">50%</div>
+          </div>
+          <div class="card-bottom">
+            <div class="avatar-stack">
+              <div class="av-sm" style="background:#00E5A0;">[E]</div>
+              <div class="av-sm" style="background:#E05252;">[F]</div>
+              <div class="av-plus">+</div>
             </div>
+            <span class="deadline-chip">[X weeks left]</span>
+          </div>
+        </div>
 
-            <div class="msg-divider"></div>
-
-            <!-- Message 5 -->
-            <div class="msg-item">
-              <div class="msg-avatar av-coral">[H]</div>
-              <div class="msg-body">
-                <div class="msg-row1">
-                  <span class="msg-name">[name]</span>
-                  <button class="msg-star">&#9734;</button>
-                </div>
-                <div class="msg-preview">[message preview text here]</div>
-                <div class="msg-date">[date]</div>
-              </div>
+        <!-- Card 4 — Blue -->
+        <div class="project-card card-4">
+          <div class="card-toprow">
+            <span class="card-date">[date]</span>
+            <button class="card-menu"><i class="ti ti-dots-vertical"></i></button>
+          </div>
+          <div>
+            <div class="card-title">[project_title]</div>
+            <div class="card-sub">[subtitle]</div>
+          </div>
+          <div>
+            <div class="progress-label">[Progress]</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width:20%; background:#4B8EE0;"></div>
             </div>
+            <div class="progress-pct">20%</div>
+          </div>
+          <div class="card-bottom">
+            <div class="avatar-stack">
+              <div class="av-sm" style="background:#4B8EE0;">[G]</div>
+              <div class="av-sm" style="background:#C8A84B;">[H]</div>
+              <div class="av-plus">+</div>
+            </div>
+            <span class="deadline-chip">[X weeks left]</span>
+          </div>
+        </div>
 
-          </div><!-- /msg-list -->
-        </div><!-- /right-inner -->
-      </aside><!-- /right-panel -->
+      </div><!-- /cards-grid -->
+    </div><!-- /panel -->
+  </div><!-- /content-col -->
 
-    </div><!-- /panels -->
-  </div><!-- /content -->
-</div><!-- /app -->
+  <!-- ═══════════ RIGHT PANEL ═══════════ -->
+  <aside class="right-panel">
+    <div class="rp-header">
+      <span class="rp-title">[Client Messages]</span>
+      <div class="rp-icons">
+        <button class="rp-icon-btn" title="Search"><i class="ti ti-search"></i></button>
+        <button class="rp-icon-btn" title="More"><i class="ti ti-dots-vertical"></i></button>
+      </div>
+    </div>
+
+    <div class="msg-list">
+
+      <!-- Msg 1 -->
+      <div class="msg-row">
+        <div class="msg-av" style="background:linear-gradient(135deg,#4B8EE0,#2a5fa0);">[D]</div>
+        <div class="msg-content">
+          <div class="msg-nameline">
+            <span class="msg-name">[name]</span>
+            <button class="msg-star"><i class="ti ti-star"></i></button>
+          </div>
+          <div class="msg-preview">[message preview text goes here]</div>
+          <div class="msg-date">[date]</div>
+        </div>
+      </div>
+
+      <!-- Msg 2 — STARRED / ACTIVE -->
+      <div class="msg-row active">
+        <div class="msg-av" style="background:linear-gradient(135deg,#00E5A0,#009966);">[S]</div>
+        <div class="msg-content">
+          <div class="msg-nameline">
+            <span class="msg-name">[name]</span>
+            <button class="msg-star"><i class="ti ti-star-filled"></i></button>
+          </div>
+          <div class="msg-preview">[message preview text goes here]</div>
+          <div class="msg-date">[date]</div>
+        </div>
+      </div>
+
+      <!-- Msg 3 -->
+      <div class="msg-row">
+        <div class="msg-av" style="background:linear-gradient(135deg,#C8A84B,#9a7a30);">[W]</div>
+        <div class="msg-content">
+          <div class="msg-nameline">
+            <span class="msg-name">[name]</span>
+            <button class="msg-star"><i class="ti ti-star"></i></button>
+          </div>
+          <div class="msg-preview">[message preview text goes here]</div>
+          <div class="msg-date">[date]</div>
+        </div>
+      </div>
+
+      <!-- Msg 4 -->
+      <div class="msg-row">
+        <div class="msg-av" style="background:linear-gradient(135deg,#E05252,#a03030);">[A]</div>
+        <div class="msg-content">
+          <div class="msg-nameline">
+            <span class="msg-name">[name]</span>
+            <button class="msg-star"><i class="ti ti-star"></i></button>
+          </div>
+          <div class="msg-preview">[message preview text goes here]</div>
+          <div class="msg-date">[date]</div>
+        </div>
+      </div>
+
+      <!-- Msg 5 -->
+      <div class="msg-row">
+        <div class="msg-av" style="background:linear-gradient(135deg,#00E5A0,#009966);">[H]</div>
+        <div class="msg-content">
+          <div class="msg-nameline">
+            <span class="msg-name">[name]</span>
+            <button class="msg-star"><i class="ti ti-star"></i></button>
+          </div>
+          <div class="msg-preview">[message preview text goes here]</div>
+          <div class="msg-date">[date]</div>
+        </div>
+      </div>
+
+    </div><!-- /msg-list -->
+  </aside>
+
+</div><!-- /dash-root -->
 
 </body>
 </html>
