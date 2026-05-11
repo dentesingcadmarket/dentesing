@@ -276,7 +276,8 @@
 
     <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
-      <div class="page-content">
+      <!-- ANA KOLON -->
+      <div id="dash-main-col">
         <div class="hero">
           <div class="hero-title" id="dash-greeting">Merhaba</div>
           <div class="hero-sub" id="dash-sub">Sistemin yükleniyor...</div>
@@ -342,6 +343,38 @@
         </div>
         <div class="items-list" id="dash-hata"></div>
         <div class="add-row" onclick="openModal('hata')">+ Yeni hata ekle</div>
+      </div>
+
+      <!-- SAĞ PANEL -->
+      <div id="dash-right-panel">
+        <div class="rp-header">
+          <div class="rp-title">Hızlı Özet</div>
+        </div>
+        <div style="padding:16px 20px;">
+          <div class="dash-stat-grid">
+            <div class="dash-stat-card">
+              <div class="dash-stat-label">Toplam İş</div>
+              <div class="dash-stat-val" id="rp-kpi-is">—</div>
+            </div>
+            <div class="dash-stat-card">
+              <div class="dash-stat-label">Toplam Hata</div>
+              <div class="dash-stat-val" id="rp-kpi-hata" style="color:var(--orange)">—</div>
+            </div>
+          </div>
+          <div style="margin-top:20px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
+            <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Hızlı İşlemler</div>
+            <button class="qa-btn green" style="width:100%;margin-bottom:8px;justify-content:center;" onclick="openModal('gun')">➕ Yeni Gün Başlat</button>
+            <button class="qa-btn orange" style="width:100%;margin-bottom:8px;justify-content:center;" onclick="openModal('hata')">⚠️ Hata Ekle</button>
+            <button class="qa-btn blue" style="width:100%;justify-content:center;" onclick="openModal('karar')">🧠 Karar Ver</button>
+          </div>
+          <div style="margin-top:20px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;">
+            <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Sayfalar</div>
+            <div class="nav-item" style="margin-bottom:4px;" onclick="navigate('plan',null)">📋 Planım</div>
+            <div class="nav-item" style="margin-bottom:4px;" onclick="navigate('magaza',null)">🛍️ Mağaza</div>
+            <div class="nav-item" style="margin-bottom:4px;" onclick="navigate('magazin',null)">📚 Magazin</div>
+            <div class="nav-item" onclick="navigate('topluluk',null)">👥 Topluluk</div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="page" id="page-gunluk"></div>
@@ -723,11 +756,17 @@
     <!-- TOPLULUK -->
     <div class="page" id="page-topluluk">
       <div class="page-content">
-        <div class="hero"><div class="hero-title">Topluluk</div><div class="hero-sub">Diğer teknisyenlerle bağlantı kur, sorularını sor, deneyimlerini paylaş.</div></div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:48px 32px;text-align:center;">
-          <div style="font-size:36px;margin-bottom:16px">🤝</div>
-          <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">Yakında Yayında</div>
-          <div style="font-size:13px;color:var(--text2);line-height:1.7">Forum, soru-cevap, vaka paylaşımı ve<br>mentor-mentee programı burada olacak.</div>
+        <div class="hero"><div class="hero-title">Topluluk</div><div class="hero-sub">Soru sor, vaka paylaş, STL dosyalarını göster.</div></div>
+        <div class="topluluk-toolbar">
+          <div class="tlk-filters">
+            <button class="tlk-filter-btn active" onclick="tlkSetFilter('hepsi',this)">Hepsi</button>
+            <button class="tlk-filter-btn" onclick="tlkSetFilter('soru',this)">Sorular</button>
+            <button class="tlk-filter-btn" onclick="tlkSetFilter('vaka',this)">Vakalar</button>
+          </div>
+          <button class="tlk-new-btn" onclick="openYeniPost()">+ Yeni Gönderi</button>
+        </div>
+        <div class="items-list" id="tlk-feed">
+          <div class="item-empty">Yükleniyor…</div>
         </div>
       </div>
     </div>
@@ -750,6 +789,50 @@
 </div>
 
 
+<!-- TOPLULUK: Yeni Gönderi Modalı -->
+<div class="modal-overlay" id="modal-yeni-post">
+  <div class="modal">
+    <div class="modal-title">Yeni Gönderi</div>
+    <div class="modal-sub">Sorun, vaka veya STL dosyasını paylaş</div>
+    <div class="modal-field">
+      <label class="modal-label">Başlık *</label>
+      <input class="modal-input" id="tlk-post-baslik" placeholder="Örn: Crown marjin hatasında doğru ayar nedir?" maxlength="200">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">İçerik</label>
+      <textarea class="modal-input" id="tlk-post-icerik" rows="4" placeholder="Detayları buraya yaz..." style="resize:vertical"></textarea>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Görsel veya STL Dosyası</label>
+      <input type="file" id="tlk-post-dosya" accept="image/*,.stl" style="display:none" onchange="tlkDosyaSecildi(this)">
+      <button class="modal-btn" style="width:100%;justify-content:center;border:1px dashed var(--border2)" onclick="document.getElementById('tlk-post-dosya').click()">📎 Dosya Seç</button>
+      <div id="tlk-post-attach" style="margin-top:6px"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" onclick="closeYeniPost()">İptal</button>
+      <button class="modal-btn primary" id="tlk-post-save" onclick="submitPost()">Paylaş</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOPLULUK: Post Detay Modalı -->
+<div class="modal-overlay" id="modal-post-detay">
+  <div class="modal modal-wide">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div class="modal-title" style="margin:0">Gönderi</div>
+      <button onclick="closePostDetay()" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;line-height:1">×</button>
+    </div>
+    <div id="tlk-detay-body" style="overflow-y:auto;max-height:55vh;padding-right:4px"></div>
+    <div style="border-top:1px solid var(--border);margin-top:16px;padding-top:14px">
+      <div style="font-size:11px;font-weight:600;color:var(--text3);margin-bottom:8px;letter-spacing:.05em">YORUM YAZ</div>
+      <div style="display:flex;gap:8px">
+        <input class="modal-input" id="tlk-yorum-input" placeholder="Yorumunu yaz..." style="flex:1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitYorum()}">
+        <button class="modal-btn primary" id="tlk-yorum-save" onclick="submitYorum()" style="white-space:nowrap">Gönder</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Lock Overlay -->
 <div id="lock-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:300;align-items:center;justify-content:center;flex-direction:column;gap:20px;text-align:center">
   <div style="font-size:56px">🔒</div>
@@ -767,6 +850,7 @@
 <script src="js/yolharita.js?v=2"></script>
 <script src="js/pierre.js?v=3"></script>
 <script src="js/vakalar.js?v=3"></script>
+<script src="js/topluluk.js?v=1"></script>
 <script src="js/wave.js"></script>
 <script>init();</script>
 </body>

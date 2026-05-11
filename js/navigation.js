@@ -223,4 +223,5 @@ function navigate(page, el) {
   if (page === 'plan') loadPlan();
   if (page === 'search') initSearch();
   if (page === 'vakalar') loadVakalar();
+  if (page === 'topluluk') loadTopluluk();
 }

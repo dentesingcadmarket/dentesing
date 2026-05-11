@@ -1,15 +1,15 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
 :root {
-  --bg:#06060d; --surface:#0d0d16; --surface2:#12121e;
+  --bg:#0d0d0d; --surface:#141414; --surface2:#1a1a1a;
   --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.11);
-  --text:#eeeef5; --text2:#7a7a92; --text3:#3a3a52;
+  --text:#eeeef5; --text2:#7a7a7a; --text3:#3a3a3a;
   --m1a:#1e4fa3; --m1b:#6ab0e8; --m1c:#c8e8ff;
   --m2a:#8a6000; --m2b:#e8b840; --m2c:#fff4c0;
-  --m3a:#4a1a7a; --m3b:#9b6dd0; --m3c:#e8d0ff;
+  --m3a:#3a1a5a; --m3b:#9b6dd0; --m3c:#e8d0ff;
   --red:#e05c5c; --red-soft:rgba(224,92,92,0.1);
   --radius:8px;
-  --sidebar-bg:#090912;
+  --sidebar-bg:#0d0d0d;
   --accent:#2d6fe8; --accent-soft:rgba(45,111,232,0.12);
   --green:#4caf7d; --green-soft:rgba(76,175,125,0.12);
   --orange:#f0a445; --orange-soft:rgba(240,164,69,0.12);
@@ -377,7 +377,7 @@ body{background:var(--bg);}
 .md-auth-overlay.open { display:flex; }
 .md-auth-box {
   width:420px; max-width:92vw;
-  background:#1a1a24; border:1px solid var(--border2);
+  background:#1a1a1a; border:1px solid var(--border2);
   border-radius:14px; padding:36px;
   box-shadow:0 32px 80px rgba(0,0,0,0.6);
 }
@@ -398,7 +398,7 @@ body{background:var(--bg);}
 .md-auth-error.show { display:block; }
 .md-auth-field { margin-bottom:14px; }
 .md-auth-label { font-size:11.5px; color:var(--text2); font-weight:500; margin-bottom:5px; display:block; }
-.md-auth-input { width:100%; background:#0f172a; border:1px solid var(--border2); border-radius:var(--radius); padding:10px 12px; color:var(--text); font-size:13.5px; font-family:var(--font-sans); outline:none; transition:border .15s; }
+.md-auth-input { width:100%; background:#141414; border:1px solid var(--border2); border-radius:var(--radius); padding:10px 12px; color:var(--text); font-size:13.5px; font-family:var(--font-sans); outline:none; transition:border .15s; }
 .md-auth-input:focus { border-color:var(--accent); }
 .md-auth-btn { width:100%; padding:11px; border-radius:var(--radius); background:var(--accent); color:#fff; font-size:14px; font-weight:600; font-family:var(--font-sans); border:none; cursor:pointer; transition:all .15s; }
 .md-auth-btn:hover { background:#3a7bc8; }
@@ -1242,7 +1242,7 @@ body{background:var(--bg);}
 /* CSS Variables refinements */
 :root {
   --sidebar-bg: #08080f;
-  --bg: #06060d;
+  --bg: #0d0d0d;
   --surface: #0e0e1a;
   --surface2: #13131f;
   --border: rgba(255,255,255,0.07);
@@ -1531,3 +1531,160 @@ body{background:var(--bg);}
 .item-cozum { font-size:11px; color:var(--text3); max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .item-thumb { width:28px; height:28px; object-fit:cover; border-radius:5px; cursor:pointer; }
 .item-file { font-size:16px; cursor:pointer; }
+
+/* ═══ DASHBOARD 2-COLUMN LAYOUT ═══ */
+#page-dashboard { display:flex !important; flex-direction:row !important; overflow:hidden !important; height:100% !important; }
+#dash-main-col { flex:1; overflow-y:auto; padding:36px 40px 60px; min-width:0; }
+#dash-right-panel {
+  width:320px;
+  flex-shrink:0;
+  background:#111111;
+  border-left:1px solid rgba(255,255,255,0.06);
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  padding:24px 0 0;
+}
+#dash-right-panel .rp-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 20px 14px;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+#dash-right-panel .rp-title { font-size:14px; font-weight:600; color:#fff; }
+.dash-stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:20px 0; }
+.dash-stat-card {
+  background:#1a1a1a;
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:12px;
+  padding:16px;
+}
+.dash-stat-label { font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:6px; }
+.dash-stat-val { font-size:22px; font-weight:700; color:#fff; }
+
+/* ── Topluluk ─────────────────────────────────────────────── */
+.topluluk-toolbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:16px;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.tlk-filters { display:flex; gap:6px; }
+.tlk-filter-btn {
+  padding:6px 14px;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:transparent;
+  color:var(--text2);
+  font-size:12px;
+  font-weight:500;
+  cursor:pointer;
+  transition:all .15s;
+}
+.tlk-filter-btn:hover { border-color:var(--border2); color:var(--text); }
+.tlk-filter-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+.tlk-new-btn {
+  padding:7px 16px;
+  background:var(--accent);
+  border:none;
+  border-radius:8px;
+  color:#fff;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:background .15s;
+}
+.tlk-new-btn:hover { background:#3a7bc8; }
+
+.post-card { cursor:pointer; align-items:flex-start; }
+.post-baslik {
+  font-size:13px;
+  font-weight:600;
+  color:var(--text);
+  margin:3px 0 4px;
+  line-height:1.4;
+}
+.post-thumb-img {
+  width:100%;
+  max-height:180px;
+  object-fit:cover;
+  border-radius:8px;
+  margin-top:8px;
+  display:block;
+}
+.post-thumb-stl {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:11px;
+  color:var(--text2);
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:4px 10px;
+  margin-top:8px;
+}
+.post-meta-btn {
+  font-size:11px;
+  color:var(--text3);
+  cursor:pointer;
+  padding:2px 6px;
+  border-radius:4px;
+  transition:background .12s;
+  user-select:none;
+}
+.post-meta-btn:hover { background:var(--surface2); color:var(--text); }
+.post-sil-btn:hover { color:#e05252; }
+
+.modal-wide { width:min(580px, 95vw) !important; }
+
+.yorum-item {
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.yorum-item:last-child { border-bottom:none; }
+.yorum-avatar {
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#1e4fa3,#2a6fc0);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:700;
+  color:#fff;
+  flex-shrink:0;
+}
+.yorum-body { flex:1; min-width:0; }
+.yorum-meta {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:3px;
+}
+.yorum-meta strong { font-size:12px; font-weight:600; color:var(--text); }
+.yorum-meta span { font-size:11px; color:var(--text3); }
+.yorum-text {
+  font-size:12.5px;
+  color:var(--text2);
+  line-height:1.5;
+  word-break:break-word;
+}
+.yorum-sil {
+  background:none;
+  border:none;
+  color:var(--text3);
+  font-size:16px;
+  cursor:pointer;
+  padding:0 4px;
+  line-height:1;
+  flex-shrink:0;
+  opacity:.5;
+}
+.yorum-sil:hover { opacity:1; color:#e05252; }
