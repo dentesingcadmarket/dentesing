@@ -7,8 +7,6 @@
   const subEl = document.getElementById('dash-sub');
   if (greetEl) greetEl.textContent = greeting + ' 👋';
   if (subEl) subEl.textContent = 'Bugün ne üzerinde çalışıyorsun?';
-  // Agent başlat
-  initAgent();
   const [g,h,gAll,hAll] = await Promise.all([
     sb.from('gunluk_takip').select('*').eq('user_id',currentUser.id).order('tarih',{ascending:false}).limit(5),
     sb.from('hata_gunlugu').select('*').eq('user_id',currentUser.id).order('tarih',{ascending:false}).limit(5),
@@ -20,6 +18,11 @@
   const avg=rows.length?Math.round(rows.reduce((a,r)=>a+(r.sure||0),0)/rows.length):0;
   document.getElementById('kpi-sure').innerHTML=avg?`${avg}<span style="font-size:16px;color:var(--text2)">dk</span>`:'—';
   document.getElementById('kpi-hata').textContent=(hAll.data||[]).length||0;
+  // Sağ panel sync
+  const rpIs=document.getElementById('rp-kpi-is');
+  const rpHata=document.getElementById('rp-kpi-hata');
+  if(rpIs) rpIs.textContent=rows.length||0;
+  if(rpHata) rpHata.textContent=(hAll.data||[]).length||0;
 
   const AVATAR_COLORS=['linear-gradient(135deg,#4a90d9,#1e293b)','linear-gradient(135deg,#e8b840,#1e293b)','linear-gradient(135deg,#9b6dd0,#1e293b)','linear-gradient(135deg,#e05050,#1e293b)','linear-gradient(135deg,#50a060,#1e293b)'];
   const gt=document.getElementById('dash-gunluk'); gt.innerHTML='';

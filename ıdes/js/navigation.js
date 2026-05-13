@@ -40,7 +40,29 @@ function showApp(modNo) {
       if (lockIcon) lockIcon.remove();
     }
   });
-  loadDashboard();
+  // Sidebar yeni elementleri doldur
+  const badge = document.getElementById('sidebar-mod-badge');
+  if (badge && modNo) {
+    const dc = {1:'var(--m1b)',2:'var(--m2b)',3:'var(--m3b)'};
+    const dn = {1:'Modül 1 · Kariyer',2:'Modül 2 · Tasarım',3:'Modül 3 · İşletme'};
+    badge.innerHTML = '<span class="mod-dot" style="background:' + (dc[modNo]||'var(--accent)') + '"></span>' + (dn[modNo]||'Modül '+modNo);
+  }
+  const avatarEl = document.getElementById('sidebar-avatar');
+  if (avatarEl && currentUser && currentUser.email) {
+    avatarEl.textContent = currentUser.email[0].toUpperCase();
+  }
+  const modTagEl = document.getElementById('sidebar-user-mod');
+  if (modTagEl) modTagEl.textContent = 'Modül ' + (modNo || 1);
+  const chipEl = document.getElementById('topbar-mod-chip');
+  if (chipEl && modNo) {
+    const cc = {1:'var(--m1b)',2:'var(--m2b)',3:'var(--m3b)'};
+    chipEl.innerHTML = '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:' + (cc[modNo]||'var(--accent)') + ';margin-right:4px"></span>M' + modNo;
+  }
+  // Hash routing — URL varsa oraya git, yoksa dashboard
+  navigateToHash();
+  if (!window.location.hash || window.location.hash === '/#dashboard' || window.location.hash === '#dashboard') {
+    loadDashboard();
+  }
 }
 function showModDetail(num) {
   currentMod = num;
@@ -205,12 +227,16 @@ const breadcrumbs = {
   yolharita: 'Yol Haritam'
 };
 
-function navigate(page, el) {
+function navigate(page, el, fromHistory) {
   // Kilit kontrolü
   const required = PAGE_MODULES[page] || 1;
   if (userModule < required) {
     showLockOverlay(required);
     return;
+  }
+  // URL güncelle (her ana buton ayrı sayfa hissi verir)
+  if (!fromHistory) {
+    history.pushState({ page }, '', '/#' + page);
   }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -218,9 +244,34 @@ function navigate(page, el) {
   if (!pageEl) return;
   pageEl.classList.add('active');
   if (el) el.classList.add('active');
-  document.getElementById('breadcrumb').innerHTML = `D·CONSOLE › <span>${breadcrumbs[page] || page}</span>`;
+  // fromHistory gelince nav-item aktif eşleştir
+  if (fromHistory) {
+    document.querySelectorAll('.nav-item[onclick]').forEach(n => {
+      if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + page + "'")) {
+        n.classList.add('active');
+      }
+    });
+  }
+  document.getElementById('breadcrumb').innerHTML = `Dentesync › <span>${breadcrumbs[page] || page}</span>`;
   if (page === 'dashboard') loadDashboard();
   if (page === 'plan') loadPlan();
   if (page === 'search') initSearch();
   if (page === 'vakalar') loadVakalar();
+  if (page === 'topluluk') loadTopluluk();
+}
+
+// ── HASH ROUTING ──
+window.addEventListener('popstate', function(e) {
+  const page = (e.state && e.state.page) ? e.state.page : 'dashboard';
+  navigate(page, null, true);
+});
+
+function navigateToHash() {
+  const raw = window.location.hash.replace(/^#\/?/, '');
+  const valid = Object.keys(breadcrumbs);
+  if (raw && valid.includes(raw)) {
+    navigate(raw, null, true);
+  } else {
+    history.replaceState({ page: 'dashboard' }, '', '/#dashboard');
+  }
 }
